@@ -5,3 +5,5 @@ use App\Http\Controllers\ApiController;
 
 Route::get('/api/get-cookie/{cookie_name}', [ApiController::class, "getCookie"]);
 Route::get('/api/set-cookie/{cookie_name}/{data}', [ApiController::class, "setCookie"]);
+
+Route::get('/api/nodes/status/{url}', [ApiController::class, "checkNodeStatus"]);

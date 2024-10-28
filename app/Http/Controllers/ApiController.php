@@ -41,4 +41,21 @@ class ApiController extends Controller
 
         return $response;
     }
+
+
+
+
+    public function checkNodeStatus($address) {
+
+        if (empty($address)) return response()->json(['error' => 'Invalid URL.'], 400);
+
+        $pingresult = exec("ping -c 1 " . escapeshellarg($address), $output, $status);
+
+        if ($status == 0) {
+            return response()->json(['success' => 'Node is reachable'], 200);
+        } else {
+            return response()->json(['error' => 'Node is not reachable'], 503);
+        }
+
+    }
 }

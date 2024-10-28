@@ -112,6 +112,46 @@
         }
     }
 
+    /**
+     * Get propper uptime back
+     */
+    if (! function_exists('vlx_get_uptime')) {
+        function vlx_get_uptime($uptime) {
+
+            $days = explode(' ', $uptime)[3];
+            $hours_and_min = explode(' ', $uptime)[6];
+
+            if (isset($days)) {
+
+                if ($days == 0) {
+                    $days = '';
+                } else {
+                    $days = $days . 'd';
+                }
+            }
+            if (isset($hours_and_min)) {
+                $hours_and_min = trim($hours_and_min, ',');
+                $hours = explode(':', $hours_and_min)[0];
+                $min = explode(':', $hours_and_min)[1];
+
+                if ($hours == 0) {
+                    $hours = '';
+                } else {
+                    $hours = $hours . 'h';
+                }
+
+                if ($min == 0) {
+                    $min = '';
+                } else {
+                    $min = $min . 'm';
+                }
+
+            }
+
+            return $days . ' ' . $hours . ' ' . $min;
+        }
+    }
+
 
 
 
@@ -180,6 +220,22 @@
 
             $url = !empty(env('SETTING_AUTH_URL')) ? env('SETTING_AUTH_URL') : 'auth';
             return vlx_start_slash_it($url);
+
+        }
+    }
+
+
+
+
+    // Get paths
+    /**
+     * Get the path to the ssh keys folder
+     */
+    if (! function_exists('vlx_get_ssh_key_path')) {
+        function vlx_get_ssh_key_path() {
+
+            $path = env('SSH_KEY_PATH');
+            return $path;
 
         }
     }

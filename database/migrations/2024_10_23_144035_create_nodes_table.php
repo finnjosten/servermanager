@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('address')->unique();
             $table->string('name');
             $table->string('ssh_user')->default('servermanager');
-            $table->string('ssh_key');
+            $table->text('ssh_key');
             $table->timestamps();
         });
     }

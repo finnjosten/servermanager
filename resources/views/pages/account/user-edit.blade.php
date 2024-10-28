@@ -19,9 +19,9 @@
         @include('components.account.sidebar', ['page' => 'user'])
         <div class="content">
             <div class="btn-group">
-                <a class="btn btn--primary btn--small" href="{{ route('dashboard.user') }}"><i class="da-icon da-icon--arrow-left da-icon--small"></i>Go back</a>
+                <a class="btn btn--primary btn--small" href="{{ route('dashboard.user') }}"><i class="vlx-icon vlx-icon--arrow-left vlx-icon--small"></i>Go back</a>
                 @if($mode == "edit")
-                    <a class="btn btn--primary btn--small btn--danger" href="{{ route('dashboard.user.trash', $user->id) }}"><i class="da-icon da-icon--trash da-icon--small"></i>Delete</a>
+                    <a class="btn btn--primary btn--small btn--danger" href="{{ route('dashboard.user.trash', $user->id) }}"><i class="vlx-icon vlx-icon--trash vlx-icon--small"></i>Delete</a>
                 @endif
             </div>
 

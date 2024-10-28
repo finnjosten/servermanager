@@ -33,7 +33,7 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->name }}</td>
-                            <td class="actions"><a href="{{ route('dashboard.user.edit', $user->id) }}" class="btn btn--link"><i class="da-icon da-icon--pen-to-square da-icon--small"></i> Edit</a></td>
+                            <td class="actions"><a href="{{ route('dashboard.user.edit', $user->id) }}" class="btn btn--link"><i class="vlx-icon vlx-icon--pen-to-square vlx-icon--small"></i> Edit</a></td>
                         </tr>
                     @endforeach
                 </tbody>

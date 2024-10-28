@@ -1,4 +1,4 @@
-<form method="POST" class="form" action="{{ route('contact.delete', $contact->id) }}">
+<form method="POST" class="form" action="{{ route('dashboard.node.delete', $node->id) }}">
     @csrf
 
     <div class="form__box">

@@ -35,7 +35,7 @@
                             <td>{{ $contact->email }}</td>
                             <td>{{ $contact->subject }}</td>
                             <td>{{ $contact->content }}</td>
-                            <td class="actions"><a href="{{ route('contact.view', $contact->id) }}" class="btn btn--link"><i class="da-icon da-icon--arrow-up-right-from-square da-icon--small"></i> View</a><a href="{{ route('contact.trash', $contact->id) }}" class="btn btn--link"><i class="da-icon da-icon--trashcan da-icon--small"></i> Delete</a></td>
+                            <td class="actions"><a href="{{ route('contact.view', $contact->id) }}" class="btn btn--link"><i class="vlx-icon vlx-icon--arrow-up-right-from-square vlx-icon--small"></i> View</a><a href="{{ route('contact.trash', $contact->id) }}" class="btn btn--link"><i class="vlx-icon vlx-icon--trashcan vlx-icon--small"></i> Delete</a></td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -1,12 +1,11 @@
 /** Account page **/
 
 html:has(.page--account) { background-color: var(--bg-clr-dark); }
+html:has(.page--form) { background-color: var(--bg-clr-dark); }
 
 
 
 /** Pages **/
-
-.login-page, .register-page, .admin-page, .admin-item { background-color: var(--primary); }
 .form .errors { max-width: 90%; }
 
 
@@ -15,34 +14,34 @@ html:has(.page--account) { background-color: var(--bg-clr-dark); }
 
 .page--form .content { min-width: 230px; min-height: 380px; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; border-radius: 20px; overflow: auto; }
 .page--form .content a { width: min-content; height: min-content; }
-.page--form .content .image-block { display: flex; align-items: center; justify-content: center; height: 500px; min-width: 350px; width: 20%; background-color: var(--bg-clr-dark); border-radius: 20px 0 0 20px; pointer-events: none; }
+.page--form .content .image-block { display: flex; align-items: center; justify-content: center; height: 500px; min-width: 350px; width: 20%; background-color: var(--bg-clr); border-radius: 20px 0 0 20px; pointer-events: none; }
 .page--form .content .image-block img { width: 80%; }
 
 
 /*** Account Pages | form ***/
 
-.page--form .form { min-width: 230px; max-width: 370px; height: 500px; width: 25%; background-color: var(--bg-clr-light); color: var(--text-clr); display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 0 20px 20px 0; overflow: hidden; }
+.page--form .form { min-width: 230px; max-width: 370px; height: 500px; width: 25%; background-color: var(--bg-clr); color: var(--text-clr); display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 0 20px 20px 0; overflow: hidden; }
 .page--form .form form { width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
 .page--form .form h2 { margin: 10px 0 20px; text-align: center; color: var(--black); }
 .page--form .form form > div { min-width: 230px; width: 85%; margin-bottom: 20px; }
 .page--form .form h4 { margin-bottom: 10px; color: var(--black); display: flex; justify-content: space-between; align-items: end; --fs: 25px; }
 .page--form .form h4 a { opacity: .7; --fs: small; width: fit-content; margin: 0 !important; }
-.page--form .form input { width: calc(100% - 10px); height: 32px; background-color: var(--transparent); border: 1px lightgray solid; padding: 5px; border-radius: 5px; transition: all .3s; --fs: 20px; }
+.page--form .form input { width: 100%; height: 32px; background-color: var(--bg-clr-light); border: 1px transparent solid; padding: 5px; border-radius: 5px; transition: all .3s; --fs: 20px; }
 .page--form .form .passBox { position: relative; }
 .page--form .form .password { width: calc(100% - 50px); }
-.page--form .form .showPass { margin: 0; background-color: var(--text-clr); width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; bottom: 0; right: 0; position: absolute; border-radius: 3px; cursor: pointer; border: 2px solid var(--secondary); transition: all .3s; }
-.page--form .form .showPass .da-icon { --clr: var(--text-clr-invert); position: absolute;}
-.page--form .form input:hover, .page--form .form input:focus, .page--form .form input:focus-visible { transition: all .3s; border: gray 1px solid; outline: 0; }
+.page--form .form .showPass { margin: 0; background-color: var(--bg-clr-light); width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; bottom: 0; right: 0; position: absolute; border-radius: 3px; cursor: pointer; border: unset; transition: all .3s; }
+.page--form .form .showPass .vlx-icon { --clr: var(--text-clr); position: absolute;}
+.page--form .form input:hover, .page--form .form input:focus, .page--form .form input:focus-visible { transition: all .3s; border: 1px solid var(--accent); outline: 0; }
 .page--form .form button { width: 100%; background-color: var(--accent); color: var(--black); padding: 15px 20px; border-radius: 10px; transition: all .3s; border: none; --fs: 25px; color: var(--text-clr-invert); }
 .page--form .form button:hover { background-color: var(--accent-hover); cursor: pointer; color: var(--text-clr); }
 .page--form .form form div > .link-button { text-align: center; width: 100%; background-color: var(--accent); color: var(--black); padding: 15px 20px; border-radius: 10px; transition: all .3s; border: none; }
 .page--form .form form div > .link-button:hover { background-color: var(--accent-hover); cursor: pointer; }
 .page--form .form form div > button > p { --fs: 13px; }
 .page--form .form form div > .link-button > p { --fs: 13px; }
-.page--form .form form a { margin: 0 0 15px 0; color: var(--text-clr); }
+.page--form .form form a { margin: 0 0 15px 0; color: var(--text-clr-dark); }
 .page--form .form form .link { margin: 10px 0; display: flex; justify-content: space-between; flex-direction: row; align-items: center; }
-.page--form .form form .link hr { text-align: center; width: 20%; color: var(--text-clr); }
-.page--form .form form .link h5 { font-weight: 400; color: var(--text-clr); text-align: center; --fs: 16px; }
+.page--form .form form .link hr { text-align: center; width: 20%; color: var(--text-clr-dark); }
+.page--form .form form .link h5 { font-weight: 400; color: var(--text-clr-dark); text-align: center; --fs: 16px; }
 .page--form .form form .link h5 a { --fs: 16px; }
 .page--form .form form .errors { color: var(--red-500) !important; --fs: 16px; }
 .page--form .form form .success { color: var(--green-500) !important; --fs: 16px; }
@@ -64,7 +63,7 @@ html:has(.page--account) { background-color: var(--bg-clr-dark); }
 .page--account nav .link-group .link:hover { opacity: 1; }
 .page--account nav .link-group .link.active { background-color: var(--bg-clr-light); opacity: 1; }
 
-.page--account nav .da-icon { --clr: var(--accent); }
+.page--account nav .vlx-icon { --clr: var(--accent); }
 .page--account nav p { --fs: 18px; }
 
 
@@ -77,7 +76,7 @@ html:has(.page--account) { background-color: var(--bg-clr-dark); }
 
 /*** Account Content > View ***/
 
-.page--account.view .form { margin: 30px; width: calc(100% - 60px); }
+.page--account.view .form { margin: 30px 0; width: calc(100% - 60px); }
 .page--account.view .form__box { width: 100%; margin-bottom: 30px; }
 .page--account.view .form__box input:not([type="submit"]) { width: 100%; margin-top: 15px; padding: 5px; border-radius: 10px; border: 0; outline: 0 !important; --fs: 16px; background-color: var(--bg-clr-light); }
 .page--account.view .form__box select { width: 100%; margin-top: 15px; padding: 5px; border-radius: 10px; border: 0; outline: 0 !important; --fs: 16px; background-color: var(--bg-clr-light); }

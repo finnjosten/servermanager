@@ -49,10 +49,10 @@
                 <h2>{{ vlx_get_env_string('APP_NAME') }}</h2>
             </a>
             <div class="navbar-mobile-items">
-                <div class="open-nav" onclick="openNav()"><i class="da-icon da-icon--bars da-icon--large"></i></div>
+                <div class="open-nav" onclick="openNav()"><i class="vlx-icon vlx-icon--bars vlx-icon--large"></i></div>
             </div>
             <div id="navbar-mobile-fullscreen" class="nav-overlay">
-                <p href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="da-icon da-icon--xmark da-icon--xxx-large"></i></p>
+                <p href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="vlx-icon vlx-icon--xmark vlx-icon--xxx-large"></i></p>
                 <div class="nav-overlay-content">
                     @foreach ($routes as $route)
                         <a href="{{ route($route['name']) }}"><p>{{ $route['show_name'] }}</p></a>

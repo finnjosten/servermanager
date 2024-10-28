@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 // Authentication stuff (should not be turned off with normal maintenance mode)
-Route::group(['middleware' => 'guest', 'prefix'], function () {
+Route::group(['middleware' => 'guest'], function () {
 
     // Setup redirects to login and register
     Route::get('/register', fn() => redirect()->route('register') );

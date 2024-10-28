@@ -49,7 +49,7 @@
                 <div class="passBox">
                     <h4>Password @if(env('SETTING_CAN_RESET_PASSWORD')) {{-- <a href="{{ route('forgot-password') }}">forgot password</a> --}} @endif</h4>
                     <input type="password" name="password" class="password" required>
-                    <a class="showPass" onclick="showPass()"><i class="showPassBtn da-icon da-icon--eye"></i></a>
+                    <a class="showPass" onclick="showPass()"><i class="showPassBtn vlx-icon vlx-icon--eye"></i></a>
                 </div>
                 <div class="link">
                     <button class="btn btn--primary" type="submit" name="login">Login</button>
@@ -73,12 +73,12 @@
                         var showPassBtn = password.querySelector(".showPassBtn");
                         if (myPass.type === "password") {
                             myPass.type = "text";
-                            showPassBtn.classList.remove("da-icon--eye");
-                            showPassBtn.classList.add("da-icon--eye-slash");
+                            showPassBtn.classList.remove("vlx-icon--eye");
+                            showPassBtn.classList.add("vlx-icon--eye-slash");
                         } else {
                             myPass.type = "password";
-                            showPassBtn.classList.add("da-icon--eye");
-                            showPassBtn.classList.remove("da-icon--eye-slash");
+                            showPassBtn.classList.add("vlx-icon--eye");
+                            showPassBtn.classList.remove("vlx-icon--eye-slash");
                         }
                     });
                 }

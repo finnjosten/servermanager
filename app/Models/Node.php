@@ -21,14 +21,27 @@ class Node extends Model
     ];
 
     protected $default_users = [ 'daemon', 'bin', 'sys', 'sync', 'games', 'man', 'lp', 'mail', 'news', 'uucp', 'proxy', 'www-data', 'backup', 'list', 'irc', 'gnats', 'nobody', 'systemd-network', 'systemd-resolve', 'messagebus', 'systemd-timesync', 'syslog', '_apt', 'tss', 'uuidd', 'tcpdump', 'sshd', 'pollinate', 'landscape', 'fwupd-refresh', 'lxd', 'mysql', 'pterodactyl', ];
+    private $tempKeyPath;
 
+    /**
+     * setup the ssh connection to the server, only used within the Model
+     */
     public function ssh()
     {
+
+        $this->tempKeyPath = tempnam(sys_get_temp_dir(), 'ssh_key-');
+        file_put_contents($this->tempKeyPath, $this->ssh_key);
+
         return Ssh::create($this->ssh_user, $this->address)
-            ->usePrivateKey(base_path(vlx_get_env_string('SSH_KEY_PATH') . $this->ssh_key))
+            ->usePrivateKey($this->tempKeyPath)
             ->disableStrictHostKeyChecking();
     }
 
+    /**
+     * Retrieve all users from the server
+     * @param bool $filtered, filter out the default users that are setup with ubuntu
+     * @return array
+     */
     public function getAllUsers($filtered = true) {
 
         $ssh = $this->ssh();
@@ -54,15 +67,23 @@ class Node extends Model
 
     }
 
-    public function getSshKeys($username) {
+    /**
+     * Retrieve all ssh keys for a certain user on the server
+     * @param string $username
+     * @return array
+     */
+    public function getSSHKeys($username) {
 
+        // Return if username is empty
         if (empty($username)) {
             return 'error:Username is required';
         }
 
+        // Setup ssh connection to node
         $ssh = $this->ssh();
 
         try {
+            // Check if user is root and use the correct path
             if ($username == 'root') {
                 $process = $ssh->execute('sudo cat /' . $username . '/.ssh/authorized_keys');
             } else {
@@ -70,6 +91,7 @@ class Node extends Model
             }
 
             if ($process->isSuccessful()) {
+                // Return an array of keys
                 return array_filter(explode("\n", $process->getOutput()), function($line) {
                     return !empty($line);
                 });
@@ -82,23 +104,82 @@ class Node extends Model
         }
     }
 
-    public function status() {
+    /**
+     * Get the operating system of the server
+     * @return string
+     */
+    public function getOS() {
 
+        // Setup ssh connection to node
         $ssh = $this->ssh();
 
         try {
-            $process = $ssh->execute('echo "Server is online"');
+            $process = $ssh->execute('uname -a');
 
             if ($process->isSuccessful()) {
-                return "Server is online";
+                $osOutput = strtolower($process->getOutput());
+
+                // Return nice name based on the output
+                if (str_contains($osOutput, 'ubuntu')) {
+                    return 'ubuntu';
+                } elseif (str_contains($osOutput, 'debian')) {
+                    return 'debian';
+                } elseif (str_contains($osOutput, 'fedora')) {
+                    return 'fedora';
+                } elseif (str_contains($osOutput, 'suse')) {
+                    return 'suse';
+                } elseif (str_contains($osOutput, 'redhat')) {
+                    return 'redhat';
+                } elseif (str_contains($osOutput, 'centos')) {
+                    return 'centos';
+                } else {
+                    return $osOutput;
+                }
+
             } else {
-                return "Server is offline: " . $process->getErrorOutput();
+                return "error:".$process->getErrorOutput();
             }
 
         } catch (Exception $e) {
             return "error:".$e->getMessage();
         }
     }
+
+    /**
+     * Get the uptime of the server in a human readable format
+     * @return string, Xd Xh Xm
+     */
+    public function uptime() {
+
+        // Setup ssh connection to node
+        $ssh = $this->ssh();
+
+        try {
+            $process = $ssh->execute('sudo uptime');
+
+            if ($process->isSuccessful()) {
+                // Parse the output of the uptime command
+                return vlx_get_uptime($process->getOutput());
+            } else {
+                return "error:".$process->getErrorOutput();
+            }
+
+        } catch (Exception $e) {
+            return "error:".$e->getMessage();
+        }
+    }
+
+    /**
+     * Make sure to remove the temp ssh key file on server deletion
+     */
+    public function __destruct()
+    {
+        if ($this->tempKeyPath && file_exists($this->tempKeyPath)) {
+            unlink($this->tempKeyPath);
+        }
+    }
+
+
 
 
 

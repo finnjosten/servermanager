@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Node::factory(1)->create([
             'address' => 'oliver.vacso.cloud',
             'name' => 'Oliver',
-            'ssh_key' => 'openssh-oliver',
+            'ssh_key' => env('KEY_LIAM'),
         ]);
 
     }
