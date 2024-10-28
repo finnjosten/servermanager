@@ -1,7 +1,7 @@
 /** Import CSS for other pages **/
 
 @import url('//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css');
-@import url('https://cdn.vacso.cloud/icons/css/icons.min.css');
+@import url('https://cdn.vacso.cloud/icons/css/veloxi.min.css');
 @import url('./account.css');
 
 
@@ -37,22 +37,17 @@
     --height-navbar: 100px;
     --height-half-navbar: var(--height-navbar) / 2;
 
-    --font-size: clamp(15px, 2vw, 20px);
-    --fs-xx-larger: clamp(50px, 2vw, 100px);
-    --fs-x-larger: clamp(50px, 2vw, 80px);
-    --fs-larger: clamp(40px, 2vw, 60px);
-    --fs-large: clamp(40px, 2vw, 50px);
-    --fs-medium: clamp(30px, 2vw, 40px);
-    --fs-small: clamp(20px, 2vw, 30px);
-    --fs-smaller: clamp(20px, 5vw, 25px);
-    --fs-x-small: clamp(16px, 5vw, 20px);
-    --fs-xx-small: 18px;
+    --font-size: clamp(16px, 2vw, 16px);
 
-    --fs-x-large: 110px;
-    --fs-large: 40px;
-    --fs-medium: 24px;
-    --fs-small: 22px;
-    --fs-x-small: 18px;
+    --fs-xxxx-larger: clamp(48px, 2vw, 32px);
+    --fs-xxx-larger: clamp(40px, 2vw, 32px);
+    --fs-xx-larger: clamp(32px, 2vw, 28px);
+    --fs-x-larger: clamp(28px, 2vw, 24px);
+    --fs-larger: clamp(24px, 2vw, 24px);
+    --fs-large: clamp(20px, 2vw, 50px);
+    --fs-medium: clamp(16px, 2vw, 16px);
+    --fs-small: clamp(14px, 2vw, 14px);
+    --fs-smaller: clamp(12px, 5vw, 12px);
 
     --grid-rows: 1;
     --grid-columns: 2;
@@ -80,20 +75,21 @@
 
     /* Main Colors **/
 
-    --text-clr: #2f2f2f;
-    --text-clr-invert: #e4e4e4;
-    --link-clr: #3578e5;
-    --link-clr-invert: #3578e5;
+    --text-clr: #ffffff;
+    --text-clr-dark: #8c94a0;
+    --text-clr-invert: #2f2f2f;
+    --link-clr: #ef4444;
+    --link-clr-invert: #ef4444;
 
     --hover-clr: #9098a7;
     --border-clr: #9098a7;
 
-    --bg-clr-light: #fff;
-    --bg-clr: #e4e4e4;
-    --bg-clr-dark: #d9d9d9;
-    --bg-clr-invert-light: #474747;
-    --bg-clr-invert: #2e2e2e;
-    --bg-clr-invert-dark: #242424;
+    --bg-clr-light: #27313f;
+    --bg-clr: #18212f;
+    --bg-clr-dark: #111827;
+    --bg-clr-invert-light: #fff;
+    --bg-clr-invert: #e4e4e4;
+    --bg-clr-invert-dark: #d9d9d9;
 
     --nav-box-shadow: 0 1px 2px 0 #0000001a;
 
@@ -102,8 +98,10 @@
 
     --primary: #202020;
     --secondary: #f3f3f3;
-    --accent: #ff8000;
-    --secondary-accent: #ff8000;
+    --accent: #ef4444;
+    --accent-trans-50: rgba(239, 68, 68, .5);
+    --accent-trans-20: rgba(239, 68, 68, .2);
+    --secondary-accent: #ef4444;
 
     --primary-100: color-mix(in oklab, var(--primary) 10%, white);
     --primary-200: color-mix(in oklab, var(--primary) 20%, white);
@@ -225,21 +223,26 @@
 
 html { background-color: var(--clr-background-tertairy); overflow-x: hidden; font-size: 10px; min-height: 100vh; background-color: var(--bg-clr); }
 
-h1, .h1 { --fs: var(--fs-x-large); --lh: 1; --fw: 900; }
-h2, .h2 { --fs: var(--fs-large); --lh: 1; --fw: 900; }
-h3, .h3 { --fs: var(--fs-medium); --lh: 1; --fw: 700;}
-h4, .h4 { --fs: var(--fs-small); --lh: 1; --fw: normal; }
-p, .p { --fs: var(--fs-small); --lh: 33px; --fw: normal; }
-a { --fs: var(--fs-x-small); --lh: 1; text-decoration: none; }
-li, .li { --fs: var(--fs-small); --lh: 33px; --fw: normal; }
-span, .span { --fs: var(--fs-small); --lh: 33px; --fw: normal; }
-input, .input { --fs: var(--fs-small); --lh: 33px; --fw: 500; }
-select, .select { --fs: var(--fs-small); --lh: 33px; --fw: 500; }
-textarea, .textarea { --fs: var(--fs-small); --lh: 33px; --fw: 500; }
-button, .button { --fs: var(--fs-small); --lh: 33px; --fw: 500; }
+h1, .h1 { --fs: var(--fs-xxxx-larger); --lh: 1; --fw: 900; }
+h2, .h2 { --fs: var(--fs-xxx-larger); --lh: 1; --fw: 900; }
+h3, .h3 { --fs: var(--fs-xx-larger); --lh: 1; --fw: 700; }
+h4, .h4 { --fs: var(--fs-x-larger); --lh: 1; --fw: 700; }
+h5, .h5 { --fs: var(--fs-larger); --lh: 1; --fw: 700; }
+h6, .h6 { --fs: var(--fs-large); --lh: 1; --fw: 700; }
+p, .p { --fs: var(--fs-medium); --lh: 1; --fw: normal; }
+small, .small { --fs: var(--fs-small); --lh: 33px; --fw: normal; }
 
-*:is(h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5,h6,.h6,p,.p,a,.a,li,.li,span,.span,input,.input,select,.select,textarea,.textarea,button,.button){ font-size: var(--fs) !important; --ff: var(--font-primary); font-weight: var(--fw) !important; color: var(--text-clr);  }
-*:is(h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5,h6,.h6) { --ff: var(--font-secondary); }
+div, .div { --fs: var(--fs-medium); --lh: 33px; --fw: normal; }
+a { --fs: var(--fs-x-medium); --lh: 1; text-decoration: none; }
+li, .li { --fs: var(--fs-medium); --lh: 33px; --fw: normal; }
+span, .span { --fs: var(--fs-medium); --lh: 33px; --fw: normal; }
+input, .input { --fs: var(--fs-medium); --lh: 33px; --fw: 500; }
+select, .select { --fs: var(--fs-medium); --lh: 33px; --fw: 500; }
+textarea, .textarea { --fs: var(--fs-medium); --lh: 33px; --fw: 500; }
+button, .button { --fs: var(--fs-medium); --lh: 33px; --fw: 500; }
+
+*:is(h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5,h6,.h6,p,.p,a,.a,li,.li,span,.span,input,.input,select,.select,textarea,.textarea,button,.button,div,.div){ font-size: var(--fs) !important; --ff: var(--font-primary); font-weight: var(--fw) !important; color: var(--text-clr-dark);  }
+*:is(h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5,h6,.h6) { --ff: var(--font-secondary); color: var(--text-clr) !important; }
 *:is(em) { font-style: italic; }
 *:is(p strong, pre strong, a strong, li strong, span strong, h3 strong, h4 strong, h5 strong, h6 strong) { --fw: bold; }
 
@@ -564,13 +567,14 @@ footer .block-2 a img { width: 40px; height: 40px; }
 
 
 /*** Icons ***/
-
+.vlx-icon { --clr: var(--accent); }
 .vlx-icon.vlx-icon--custom-dot { --w: 10px; --h: 10px; background: rgba(143, 212, 255, 0.50); margin-right: 8px; border-radius: 50%; }
-.vlx-icon.vlx-icon--x-large { --w: 30px; --h: var(--w); }
-.vlx-icon.vlx-icon--xx-large { --w: 35px; --h: var(--w); }
-.vlx-icon.vlx-icon--xxx-large { --w: 40px; --h: var(--w); }
+.vlx-icon.vlx-icon--large { --w: 30px; --h: var(--w); }
+.vlx-icon.vlx-icon--x-large { --w: 35px; --h: var(--w); }
+.vlx-icon.vlx-icon--xx-large { --w: 40px; --h: var(--w); }
 
 
+.vlx-icon--wrapper { padding: 15px; background-color: var(--accent-trans-20); border-radius: 50%; }
 
 
 
@@ -652,7 +656,7 @@ footer .block-2 a img { width: 40px; height: 40px; }
 
 /*** Cards ***/
 
-.vlx-card { background-color: var(--bg-clr-dark); border: 1px solid var(--border-clr); border-radius: var(--border-radius); }
+.vlx-card { background-color: var(--bg-clr); border: 1px solid var(--border-clr); border-radius: var(--border-radius); }
 .vlx-card:hover { border: 1px solid var(--accent);}
 .vlx-card .vlx-card__header { --p: 2rem 2rem 1rem; padding: var(--p); }
 .vlx-card .vlx-card__header img { width: 100%; height: auto; border-radius: var(--border-radius-0-5x); }
@@ -662,7 +666,5 @@ footer .block-2 a img { width: 40px; height: 40px; }
 
 /** Cards > Items **/
 
-.vlx-card.vlx-card--items {  }
-.vlx-card.vlx-card--items .vlx-card__header img { width: 100%; height: auto; }
-.vlx-card.vlx-card--items .vlx-card__body h3 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
-.vlx-card.vlx-card--items .vlx-card__body p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;}
+.vlx-card.vlx-card--server { display: flex; flex-direction: row; }
+.vlx-card.vlx-card--server .vlx-card__footer { display: grid; place-content: center; }

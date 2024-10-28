@@ -17,12 +17,24 @@
     @endphp
 
     <main class="page page--account dashboard">
-        <section class="vlx-servers">
+        <section class="vlx-block vlx-block--servers">
             <div class="container">
                 <div class="inner">
                     @foreach (Nodes::all() as $node)
+                        @php
+                            $node->status = $node->status();
+                        @endphp
                         <div class="vlx-card vlx-card--server">
-                            {{ $node }}
+                            <div class="vlx-card__body">
+                                <h3>{{ $node->name }}</h3>
+                                <p>User: {{ $node->ssh_user }}</p>
+                                <p>Key: {{ $node->ssh_key }}</p>
+                            </div>
+                            <div class="vlx-card__footer">
+                                <div class="vlx-icon--wrapper">
+                                    <i class="vlx-icon vlx-icon--brand-ubuntu vlx-icon--x-large"></i>
+                                </div>
+                            </div>
                         </div>
                     @endforeach
                 </div>
