@@ -4,9 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Node;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Auth;
 
 class NodeController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Node $node) {
+        if ($node->user_id !== Auth::user()->id) {
+            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+        }
+        return view('pages.account.node', ['node' => $node]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -23,12 +36,24 @@ class NodeController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required',
-                'address' => 'required',
-                'ssh_user' => 'required',
-                'ssh_key' => 'required',
+                'ipv4' => 'required',
+                'fqdn' => 'required',
+                'endpoint' => 'required',
+                'key' => 'required',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->with('error', 'A field did not meet the requirements')->withInput();
+        }
+
+        if (!str_ends_with($validated['endpoint'], '/')) {
+            $validated['endpoint'] .= '/';
+        }
+
+        $validated['key'] = Crypt::encrypt($validated['key']);
+
+        // Ensure the endpoint ends with a slash
+        if (substr($validated['endpoint'], -1) !== '/') {
+            $validated['endpoint'] .= '/';
         }
 
         // Clear any previous errors
@@ -37,9 +62,11 @@ class NodeController extends Controller
         // Create the item
         $node = Node::create([
             'name' =>  $validated['name'],
-            'address' =>  $validated['address'],
-            'ssh_user' =>  $validated['ssh_user'],
-            'ssh_key' =>  $validated['ssh_key'],
+            'ipv4' =>  $validated['ipv4'],
+            'fqdn' =>  $validated['fqdn'],
+            'endpoint' =>  $validated['endpoint'],
+            'key' =>  $validated['key'],
+            'user_id' => Auth::user()->id,
         ]);
 
         return redirect()->route('dashboard.main')->with('success', 'Node has been added');
@@ -50,6 +77,9 @@ class NodeController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Node $node) {
+        if ($node->user_id !== Auth::user()->id) {
+            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+        }
         return view('pages.account.node-edit', ['mode' => 'edit', 'node' => $node]);
     }
 
@@ -58,17 +88,32 @@ class NodeController extends Controller
      */
     public function update(Request $request, Node $node) {
 
+        if ($node->user_id !== Auth::user()->id) {
+            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+        }
+
         // Validate the request
         try {
             $validated = $request->validate([
-                'title' => 'required',
-                'slug' => 'required',
-                'category' => 'required',
-                'content' => 'required',
-                'excerpt' => 'required',
+                'name' => 'required',
+                'ipv4' => 'required',
+                'fqdn' => 'required',
+                'endpoint' => 'required',
+                'key' => 'required',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->with('error', 'A field did not meet the requirements')->withInput();
+        }
+
+        if (!str_ends_with($validated['endpoint'], '/')) {
+            $validated['endpoint'] .= '/';
+        }
+
+        $validated['key'] = Crypt::encrypt($validated['key']);
+
+        // Ensure the endpoint ends with a slash
+        if (substr($validated['endpoint'], -1) !== '/') {
+            $validated['endpoint'] .= '/';
         }
 
         // Clear any previous errors
@@ -76,14 +121,15 @@ class NodeController extends Controller
 
         // Update the item
         $node->update([
-            'title' => $validated['title'],
-            'slug' => vlx_slugify($validated['slug']),
-            'category_id' => $validated['category'],
-            'excerpt' => $validated['excerpt'],
-            'content' => $validated['content'],
+            'name' =>  $validated['name'],
+            'ipv4' =>  $validated['ipv4'],
+            'fqdn' =>  $validated['fqdn'],
+            'endpoint' =>  $validated['endpoint'],
+            'key' =>  $validated['key'],
+            'user_id' => Auth::user()->id,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Node has been updated');
+        return redirect()->route('dashboard.node', $node->id)->with('success', 'Node has been updated');
 
     }
 
@@ -91,6 +137,9 @@ class NodeController extends Controller
      * Show the form for removing the specified resource.
      */
     public function trash(Node $node) {
+        if ($node->user_id !== Auth::user()->id) {
+            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+        }
         return view('pages.account.node-edit', ['mode' => 'delete', 'node' => $node]);
     }
 
@@ -99,10 +148,13 @@ class NodeController extends Controller
      */
     public function destroy(Node $node) {
 
-        $node->clearMediaCollection('media');
+        if ($node->user_id !== Auth::user()->id) {
+            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+        }
+
         $node->delete();
 
-        return redirect()->route('dashboard')->with('success', 'Node has been deleted');
+        return redirect()->route('dashboard.main')->with('success', 'Node has been deleted');
 
     }
 }

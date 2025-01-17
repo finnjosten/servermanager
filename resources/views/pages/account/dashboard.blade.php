@@ -28,19 +28,19 @@
         <section class="vlx-block vlx-block--servers">
             <div class="container">
                 <div class="inner">
-                    @foreach (Nodes::all() as $node)
-                        <div class="vlx-card vlx-card--server js-status" data-status="unkown" data-address="{{ $node->address }}">
+                    @foreach (Nodes::all()->where('user_id', auth()->id()) as $node)
+                        <a href="{{ route('dashboard.node', $node->id) }}" class="vlx-card vlx-card--server js-status" data-status="unkown" data-address="{{ $node->fqdn ?? $node->ipv4 }}">
                             <div class="vlx-card__body">
                                 <h3>{{ $node->name }}</h3>
-                                <p>User: {{ $node->ssh_user }}</p>
-                                <p>Uptime: {{ $node->uptime() }}</p>
+                                <p>{{ $node->get_ip() }}</p>
+                                <p>{{ $node->get_uptime()  }}</p>
                             </div>
                             <div class="vlx-card__footer">
                                 <div class="vlx-icon--wrapper">
-                                    <i class="vlx-icon vlx-icon--brand-{{ $node->getOS() }} vlx-icon--x-large"></i>
+                                    <i class="vlx-icon vlx-icon--brand-{{ $node->get_os() }} vlx-icon--x-large"></i>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                     <script src="/js/servercheck.js"></script>
                 </div>

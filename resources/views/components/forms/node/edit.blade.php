@@ -1,24 +1,28 @@
-<form method="POST" class="form" action="{{ route('dashboard.node.update') }}">
+<form method="POST" class="form" action="{{ route('dashboard.node.update', $node->id) }}">
     @csrf
 
     <div class="form__box">
+        <h3>Name</h3>
+        <input required type="text" name="name" value="{{ $node->name }}" placeholder="The name of the node">
+    </div>
+    <div class="form__box">
         <div class="col">
-            <h3>Name</h3>
-            <input required type="text" name="name" value="{{ $node->name }}" placeholder="The name of the node">
+            <h3>IPv4</h3>
+            <input required type="text" name="ipv4" value="{{ $node->ipv4 }}" placeholder="127.0.0.1">
         </div>
         <div class="col">
-            <h3>Address</h3>
-            <input required type="text" name="address" value="{{ $node->address }}" placeholder="IPv4, IPv6 or FQDN">
+            <h3>FQDN</h3>
+            <input required type="text" name="fqdn" value="{{ $node->fqdn }}" placeholder="server.domain.com">
         </div>
     </div>
     <div class="form__box">
         <div class="col">
-            <h3>SSH User</h3>
-            <input required type="text" name="ssh_user" value="{{ $node->ssh_user }}" placeholder="The username of the ssh user">
+            <h3>Endpoint</h3>
+            <input required type="text" name="endpoint" value="{{ $node->endpoint }}" placeholder="https://api.domain.com/api/">
         </div>
         <div class="col">
-            <h3>SSH Key</h3>
-            <textarea required name="ssh_key" placeholder="The contents of the OpenSSH Key used to login to the node">Blank for safety, dont remove or edit if the key doesnt need to change</textarea>
+            <h3>API Key</h3>
+            <input required type="text" name="key" value="{{ vlxIsEncrypted($node->key) ? Crypt::decrypt($node->key) : $node->key }}" >
         </div>
     </div>
     <div class="form__box">

@@ -1,7 +1,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const servers = document.querySelectorAll(".js-status");
-    const updateText = document.querySelector("#upate-time");
+    const updateText = document.querySelector("#upate-time") ?? null;
 
     servers.forEach(server => {
         const serverUrl = server.getAttribute("data-address");
@@ -9,20 +9,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function recheckStatus() {
-        updateText.textContent = "Updating now";
+        if (updateText) updateText.textContent = "Updating now";
         servers.forEach(server => {
             const serverUrl = server.getAttribute("data-address");
             server.setAttribute("data-status", "unkown");
             checkServerStatus(server, serverUrl);
         });
-        setTimeout(null, 500)
+        setTimeout(null, 1000)
         let countdown = 10;
         const countdownInterval = setInterval(() => {
-            updateText.textContent = `Updating in ${countdown}s`;
+            if (updateText) updateText.textContent = `Updating in ${countdown}s`;
             countdown--;
-            if (countdown < 0) {
-            clearInterval(countdownInterval);
-            recheckStatus();
+            if (countdown == 0) {
+                clearInterval(countdownInterval);
+                recheckStatus();
             }
         }, 1000);
     }

@@ -3,7 +3,7 @@
 
 
 
-    // Format
+    // Meta data
     /**
      * Set meta data for a page
      */
@@ -38,6 +38,25 @@
                 <meta name="twitter:image" content="'. env("APP_URL") .'">
                 <meta name="twitter:url" content="'. env("APP_URL") .'">
             ';
+        }
+    }
+
+
+
+
+    // Checking
+    /**
+     * Check if a string is encrypted
+     */
+    if (! function_exists('vlxIsEncrypted')) {
+        function vlxIsEncrypted($string) {
+            // check if the string is encrypted with the laravel Crypt
+            try {
+                $decrypted = decrypt($string);
+                return true;
+            } catch (\Exception $e) {
+                return false;
+            }
         }
     }
 
@@ -152,6 +171,33 @@
         }
     }
 
+    /**
+     * Cast an array to an object
+     */
+    if (! function_exists('vlx_cast_to_object')) {
+        function vlx_cast_to_object($array) {
+            if (is_array($array)) {
+                return (object) array_map(__FUNCTION__, $array);
+            } else {
+                return $array;
+            }
+        }
+    }
+
+    /**
+     * Cast an object to an array
+     */
+    if (! function_exists('vlx_cast_to_array')) {
+        function vlx_cast_to_array($object) {
+            if (is_object($object)) {
+                $object = (array) $object;
+                return array_map(__FUNCTION__, $object);
+            } else {
+                return $object;
+            }
+        }
+    }
+
 
 
 
@@ -229,13 +275,13 @@
 
     // Get paths
     /**
-     * Get the path to the ssh keys folder
+     * Get the path to something
      */
-    if (! function_exists('vlx_get_ssh_key_path')) {
-        function vlx_get_ssh_key_path() {
+    if (! function_exists('vlx_path_to_something')) {
+        function vlx_path_to_something() {
 
-            $path = env('SSH_KEY_PATH');
-            return $path;
+            /* $path = env('');
+            return $path; */
 
         }
     }
@@ -270,8 +316,8 @@
 
             //if(str_contains($env_key, 'KEY')) return null;
             if(str_contains($env_key, 'API')) return null;
-            if(str_contains($env_key, 'USERNAME')) return null;
-            if(str_contains($env_key, 'PASS')) return null;
+            //if(str_contains($env_key, 'USERNAME')) return null;
+            //if(str_contains($env_key, 'PASS')) return null;
 
             $string = env($env_key);
             $string = vlx_format($string);

@@ -16,32 +16,28 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard/', fn() => redirect()->route('dashboard.main') );
 
     // Add a prefix
-    Route::group(['prefix' => vlx_get_account_url()], function() {
 
-        // Dashboard
-        Route::group(['namespace' => 'auth_navbar'],function() {
-            Route::view('/', 'pages.account.dashboard')->name('dashboard.main');
-        });
+    // Dashboard
+    Route::view('/', 'pages.account.dashboard')->name('dashboard.main');
 
-        // Logout
-        // Get disabled due to safety
-        //Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
-        // Post only due to safety
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // Logout
+    // Get disabled due to safety
+    //Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
+    // Post only due to safety
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-        // Nodes
-        Route::view('/nodes', 'pages.account.node')->name('dashboard.node');
+    // Nodes
+    Route::get( '/nodes/view/{node:id}',    [NodeController::class, 'index']    )->name('dashboard.node');
 
-        // Nodes form endpoints
-        Route::get( '/nodes/add/',          [NodeController::class, 'create']   )->name('dashboard.node.create');   //FE
-        Route::post('/nodes/add/',          [NodeController::class, 'store']    )->name('dashboard.node.store');    //BE
+    // Nodes form endpoints
+    Route::get( '/nodes/add/',              [NodeController::class, 'create']   )->name('dashboard.node.create');   //FE
+    Route::post('/nodes/add/',              [NodeController::class, 'store']    )->name('dashboard.node.store');    //BE
 
-        Route::get( '/nodes/update/{node}', [NodeController::class, 'edit']     )->name('dashboard.node.edit');     //FE
-        Route::post('/nodes/update/{node}', [NodeController::class, 'update']   )->name('dashboard.node.update');   //BE
+    Route::get( '/nodes/update/{node:id}',  [NodeController::class, 'edit']     )->name('dashboard.node.edit');     //FE
+    Route::post('/nodes/update/{node:id}',  [NodeController::class, 'update']   )->name('dashboard.node.update');   //BE
 
-        Route::get( '/nodes/delete/{node}', [NodeController::class, 'trash']    )->name('dashboard.node.trash');    //FE
-        Route::post('/nodes/delete/{node}', [NodeController::class, 'delete']   )->name('dashboard.node.delete');   //BE
+    Route::get( '/nodes/delete/{node:id}',  [NodeController::class, 'trash']    )->name('dashboard.node.trash');    //FE
+    Route::post('/nodes/delete/{node:id}',  [NodeController::class, 'destroy']  )->name('dashboard.node.delete');   //BE
 
-    });
 });

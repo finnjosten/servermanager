@@ -1,7 +1,7 @@
 /** Account page **/
 
 html:has(.page--account) { background-color: var(--bg-clr-dark); }
-html:has(.page--form) { background-color: var(--bg-clr-dark); }
+html:has(.vlx-auth) { background-color: var(--bg-clr-dark); }
 
 
 
@@ -12,15 +12,15 @@ html:has(.page--form) { background-color: var(--bg-clr-dark); }
 
 /*** Account Pages | Content ***/
 
-.page--form .content { min-width: 230px; min-height: 380px; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; border-radius: 20px; overflow: auto; }
+/* .page--form .content { min-width: 230px; min-height: 380px; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; border-radius: 20px; overflow: auto; }
 .page--form .content a { width: min-content; height: min-content; }
 .page--form .content .image-block { display: flex; align-items: center; justify-content: center; height: 500px; min-width: 350px; width: 20%; background-color: var(--bg-clr); border-radius: 20px 0 0 20px; pointer-events: none; }
-.page--form .content .image-block img { width: 80%; }
+.page--form .content .image-block img { width: 80%; } */
 
 
 /*** Account Pages | form ***/
 
-.page--form .form { min-width: 230px; max-width: 370px; height: 500px; width: 25%; background-color: var(--bg-clr); color: var(--text-clr); display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 0 20px 20px 0; overflow: hidden; }
+/* .page--form .form { min-width: 230px; max-width: 370px; height: 500px; width: 25%; background-color: var(--bg-clr); color: var(--text-clr); display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 0 20px 20px 0; overflow: hidden; }
 .page--form .form form { width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
 .page--form .form h2 { margin: 10px 0 20px; text-align: center; color: var(--black); }
 .page--form .form form > div { min-width: 230px; width: 85%; margin-bottom: 20px; }
@@ -44,9 +44,28 @@ html:has(.page--form) { background-color: var(--bg-clr-dark); }
 .page--form .form form .link h5 { font-weight: 400; color: var(--text-clr-dark); text-align: center; --fs: 16px; }
 .page--form .form form .link h5 a { --fs: 16px; }
 .page--form .form form .errors { color: var(--red-500) !important; --fs: 16px; }
-.page--form .form form .success { color: var(--green-500) !important; --fs: 16px; }
+.page--form .form form .success { color: var(--green-500) !important; --fs: 16px; } */
 
 
+
+.vlx-block--auth { height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: row; gap: 20px; }
+
+.vlx-block--auth .vlx-inner--btn { display: none; padding: 40px; height: 100%; max-height: 500px; width: 100%; max-width: 370px; background-color: var(--bg-clr); border-radius: 20px; }
+.vlx-block--auth .vlx-image { height: 100%; width: 100%; }
+.vlx-block--auth .vlx-image img { height: 100%; width: 100%; }
+
+.vlx-block--auth .vlx-inner--form { }
+.vlx-block--auth .vlx-inner--form { padding: 40px; height: 100%; max-height: 500px; width: 100%; max-width: 370px; background-color: var(--bg-clr); border-radius: 20px; }
+.vlx-block--auth .vlx-inner--form h2 { margin-bottom: 20px; text-align: center; }
+
+.vlx-block--auth .vlx-inner--form .vlx-divider { margin: 10px 0; display: flex; justify-content: space-between; flex-direction: row; align-items: center; }
+.vlx-block--auth .vlx-inner--form .vlx-divider hr { text-align: center; width: 20%; color: var(--text-clr-dark); }
+.vlx-block--auth .vlx-inner--form .vlx-divider p { font-weight: 400; --clr: var(--text-clr-dark); --fw: 700; text-align: center; --fs: 16px; }
+.vlx-block--auth .vlx-inner--form .vlx-divider a { --fs: 16px; }
+
+@media (min-width: 992px) {
+    .vlx-block--auth .vlx-inner--btn { display: block; }
+}
 
 /** Account Sidebar **/
 

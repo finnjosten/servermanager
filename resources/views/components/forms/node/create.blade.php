@@ -2,23 +2,27 @@
     @csrf
 
     <div class="form__box">
+        <h3>Name</h3>
+        <input required type="text" name="name" placeholder="The name of the node">
+    </div>
+    <div class="form__box">
         <div class="col">
-            <h3>Name</h3>
-            <input required type="text" name="name" placeholder="The name of the node">
+            <h3>IPv4</h3>
+            <input required type="text" name="ipv4" placeholder="127.0.0.1">
         </div>
         <div class="col">
-            <h3>Address</h3>
-            <input required type="text" name="address" placeholder="IPv4, IPv6 or FQDN">
+            <h3>FQDN</h3>
+            <input required type="text" name="fqdn" placeholder="server.domain.com">
         </div>
     </div>
     <div class="form__box">
         <div class="col">
-            <h3>SSH User</h3>
-            <input required type="text" name="ssh_user" placeholder="The username of the ssh user">
+            <h3>Endpoint</h3>
+            <input required type="text" name="endpoint" placeholder="https://api.domain.com/api/">
         </div>
         <div class="col">
-            <h3>SSH Key</h3>
-            <textarea required name="ssh_key" placeholder="The contents of the OpenSSH Key used to login to the node"></textarea>
+            <h3>API Key</h3>
+            <input required type="text" name="key">
         </div>
     </div>
     <div class="form__box">

@@ -19,11 +19,21 @@ class NodeFactory extends Factory
 
         $domain = $this->faker->domainWord();
 
+        return [];
+
+        /* return [
+            'ipv4' => null,
+            'fqdn' => 'oliver.vacso.cloud', // Hardcoded for testing
+            'name' => 'Oliver',
+            'endpoint' => 'https://oliver.vacso.cloud/api',
+            'key' => 'test', // Change to a hardcoded value
+        ];
+
         return [
             'address' => $this->faker->ipv4,
             'name' => $domain,
-            'ssh_user' => 'servermanager',
-            'ssh_key' => 'openssh-' . $domain,
-        ];
+            'endpoint' => 'https://' . $domain . '/api',
+            'key' => "test",
+        ]; */
     }
 }

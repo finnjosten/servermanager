@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('nodes', function (Blueprint $table) {
             $table->id();
-            $table->string('address')->unique();
+            $table->string('ipv4')->unique()->nullable();
+            $table->string('fqdn')->unique()->nullable();
             $table->string('name');
-            $table->string('ssh_user')->default('servermanager');
-            $table->text('ssh_key');
+            $table->string('endpoint');
+            $table->string('key', 512);
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
