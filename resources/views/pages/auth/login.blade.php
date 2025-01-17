@@ -20,72 +20,74 @@
 
 @endphp
 
-<main class="login-page page--form">
-    <div class="content">
-        <a href="{{ $route_home_exists && route('home') }}">
-            <div class="image-block">
-                <img src="/images/logos/logo.svg"/>
-            </div>
-        </a>
-        <div class="form">
-            @if (!empty(request()->query('return')))
-                <form method="post" action="{{ route('login.post', ["return" => request()->query('return')]) }}">
-            @else
-                <form method="post" action="{{ route('login.post') }}">
-            @endif
-                @csrf
-                <h2>Login</h2>
-                <div class="link">
-                    <hr>
-                    <h5>
-                        LOGIN WITH EMAIL
-                    </h5>
-                    <hr>
-                </div>
-                <div>
-                    <h4>Email</h4>
-                    <input type="email" name="email" id="email" value="{{ old('email') }}" required>
-                </div>
-                <div class="passBox">
-                    <h4>Password @if(env('SETTING_CAN_RESET_PASSWORD')) {{-- <a href="{{ route('forgot-password') }}">forgot password</a> --}} @endif</h4>
-                    <input type="password" name="password" class="password" required>
-                    <a class="showPass" onclick="showPass()"><i class="showPassBtn vlx-icon vlx-icon--eye"></i></a>
-                </div>
-                <div class="link">
-                    <button class="btn btn--primary" type="submit" name="login">Login</button>
-                </div>
-                @if(env('SETTING_CAN_REGISTER') && $route_register_exists)
-                    <div class="link">
+<main class="vlx-auth vlx-auth--login">
+    <div class="vlx-block--auth">
+            <a class="vlx-inner vlx-inner--btn" href="{{ $route_home_exists && route('home') }}">
+                <figure class="vlx-image">
+                    <img src="/images/logos/logo.svg"/>
+                </figure>
+            </a>
+            <div class="vlx-inner vlx-inner--form">
+                @if (!empty(request()->query('return')))
+                    <form method="post" action="{{ route('login.post', ["return" => request()->query('return')]) }}">
+                @else
+                    <form method="post" action="{{ route('login.post') }}">
+                @endif
+                    @csrf
+                    <h2>Login</h2>
+                    <div class="vlx-divider">
                         <hr>
-                        <h5>
-                            <a href="{{ route('register') }}">REGISTER</a>
-                        </h5>
+                        <p>
+                            LOGIN WITH EMAIL
+                        </p>
                         <hr>
                     </div>
-                @endif
-            </form>
-            <script>
-                function showPass() {
-                    const passwords = document.querySelectorAll(".passBox");
-                    passwords.forEach(password => {
-                        var myPass = password.querySelector(".password");
-                        var showPass = password.querySelector(".showPass");
-                        var showPassBtn = password.querySelector(".showPassBtn");
-                        if (myPass.type === "password") {
-                            myPass.type = "text";
-                            showPassBtn.classList.remove("vlx-icon--eye");
-                            showPassBtn.classList.add("vlx-icon--eye-slash");
-                        } else {
-                            myPass.type = "password";
-                            showPassBtn.classList.add("vlx-icon--eye");
-                            showPassBtn.classList.remove("vlx-icon--eye-slash");
-                        }
-                    });
-                }
-            </script>
+                    <div class="vlx-input-wrapper">
+                        <h4>Email</h4>
+                        <input class="vlx-input" type="email" name="email" id="email" value="{{ old('email') }}" required>
+                    </div>
+                    <div class="vlx-input-wrappper">
+                        <h4>Password @if(env('SETTING_CAN_RESET_PASSWORD')) {{-- <a href="{{ route('forgot-password') }}">forgot password</a> --}} @endif</h4>
+                        <input class="js-password" type="password" name="password" id="password" required>
+                        <i class="vlx-icon vlx-icon--eye js-password-btn"></i>
+                    </div>
+                    <div class="vlx-input-wrapper">
+                        <button class="btn btn--primary" type="submit" name="login">Login</button>
+                    </div>
+                    @if(env('SETTING_CAN_REGISTER') && $route_register_exists)
+                        <div class="vlx-divider">
+                            <hr>
+                            <p>
+                                <a href="{{ route('register') }}">REGISTER</a>
+                            </p>
+                            <hr>
+                        </div>
+                    @endif
+                </form>
 
-        </div>
+            </div>
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInputs = document.querySelectorAll('.js-password');
+        const passwordBtns = document.querySelectorAll('.js-password-btn');
+
+        passwordBtns.forEach((btn, index) => {
+            btn.addEventListener('click', function() {
+                if (passwordInputs[index].type === 'password') {
+                    passwordInputs[index].type = 'text';
+                    btn.classList.remove('vlx-icon--eye');
+                    btn.classList.add('vlx-icon--eye-slash');
+                } else {
+                    passwordInputs[index].type = 'password';
+                    btn.classList.add('vlx-icon--eye');
+                    btn.classList.remove('vlx-icon--eye-slash');
+                }
+            });
+        });
+    });
+</script>
 
 @endsection
