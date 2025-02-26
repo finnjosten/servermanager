@@ -12,12 +12,14 @@ use Exception;
 require_once 'Node/NodeInfo.php';
 require_once 'Node/NodeNetwork.php';
 require_once 'Node/NodeUser.php';
+require_once 'Node/NodeWebapp.php';
 
 // Node as like a server node
 class Node extends Model {
     use NodeInfo;
     use NodeNetwork;
     use NodeUser;
+    use NodeWebapp;
     use HasFactory;
 
     protected $fillable = [

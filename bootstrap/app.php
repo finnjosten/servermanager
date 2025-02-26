@@ -22,6 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('auth-admin', [
             AuthAdmin::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            '/api/nodes/start-monitoring',
+            '/api/nodes/status-updates',
+            '/api/nodes/stop-monitoring',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

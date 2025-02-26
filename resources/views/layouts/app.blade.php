@@ -4,10 +4,10 @@
         <?php vlx_set_social_meta() ?>
         <?php vlx_set_page_meta() ?>
 
-        <link rel="stylesheet" href="/css/toastr.css">
-        <link rel="stylesheet" href="/css/core.css">
-        <link rel="stylesheet" href="/css/account.css">
-        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+        <link rel="stylesheet" href="/css/toastr.css?{{ time() }}">
+        <link rel="stylesheet" href="/css/core.css?{{ time() }}">
+        <link rel="stylesheet" href="/css/account.css?{{ time() }}">
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
 
         <script src="/js/app.js?v=1.0"></script>
@@ -24,6 +24,8 @@
                 "progressBar": true,
             };
         </script>
+
+        <script src="https://cdn.jsdelivr.net/gh/underground-works/clockwork-browser@1/dist/toolbar.js"></script>
 
 
         {{--

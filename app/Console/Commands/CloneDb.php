@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class CloneDb extends Command
 {
@@ -24,6 +25,10 @@ class CloneDb extends Command
      * Execute the console command.
      */
     public function handle() {
+
+        // Log the start of the process to the laravel log
+        Log::info('Starting the database clone process.');
+
         // Export the current database
         $dbHost = config('database.connections.mysql.host');
         $dbName = config('database.connections.mysql.database');
@@ -44,9 +49,11 @@ class CloneDb extends Command
                 $this->info("Database exported successfully to: $backupPath");
             } else {
                 $this->error('Database export failed.');
+                Log::error('Database export failed.');
             }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
+            Log::error('Database export failed.');
         }
 
         // Import the current database into the fallback database
@@ -64,11 +71,14 @@ class CloneDb extends Command
 
             if ($resultCode === 0) {
                 $this->info("Database imported successfully to: $cloneDbName");
+                Log::info('Database imported successfully. Clone complete.');
             } else {
                 $this->error('Database import failed.');
+                Log::error('Database import failed.');
             }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
+            Log::error('Database import failed.');
         }
 
     }

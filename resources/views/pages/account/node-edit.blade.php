@@ -21,12 +21,12 @@
                 <div class="content">
                     <div class="btn-group btn-group--left">
                         @if($mode != "create")
-                            <a class="btn btn--primary btn--small" href="{{ route('dashboard.node', $node->id) }}">Go back<i class="vlx-icon vlx-icon--rotate-left vlx-icon--small"></i></a>
+                            <a class="btn btn--primary btn--small" href="{{ route('dashboard.node', $node->id) }}"><i class="vlx-icon vlx-icon--arrow-left vlx-icon--small"></i>Go back</a>
                         @else
-                            <a class="btn btn--primary btn--small" href="{{ route('dashboard.main') }}">Go back<i class="vlx-icon vlx-icon--rotate-left vlx-icon--small"></i></a>
+                            <a class="btn btn--primary btn--small" href="{{ route('dashboard.main') }}"><i class="vlx-icon vlx-icon--arrow-left vlx-icon--small"></i>Go back</a>
                         @endif
                         @if($mode == "edit")
-                            <a class="btn btn--primary btn--small" href="{{ route('dashboard.node.trash', $node->id) }}"><i class="vlx-icon vlx-icon--trash vlx-icon--small"></i>Delete</a>
+                            <a class="btn btn--danger btn--small" href="{{ route('dashboard.node.trash', $node->id) }}"><i class="vlx-icon vlx-icon--trash vlx-icon--small"></i>Delete</a>
                         @elseif($mode == "delete")
                         @endif
                     </div>

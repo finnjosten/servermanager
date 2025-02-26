@@ -16,9 +16,9 @@ trait NodeInfo {
      */
     public function get_os() {
 
-        $response = $this->api_call('/node/os');
+        $response = $this->api_call("/node/os");
 
-        if (isset($response->error) || !isset($response->data)) {
+        if ((isset($response->status) && $response->status == "error") || !isset($response->data)) {
             return "ubuntu";
         }
 
@@ -31,9 +31,9 @@ trait NodeInfo {
      */
     public function get_ip() {
 
-        $response = $this->api_call('/node/ip');
+        $response = $this->api_call("/node/ip");
 
-        if (isset($response->error) || !isset($response->data)) {
+        if ((isset($response->status) && $response->status == "error") || !isset($response->data)) {
             return "0.0.0.0";
         }
 
@@ -46,9 +46,9 @@ trait NodeInfo {
      */
     public function get_uptime() {
 
-        $response = $this->api_call('/node/uptime');
+        $response = $this->api_call("/node/uptime");
 
-        if (isset($response->error) || !isset($response->data)) {
+        if ((isset($response->status) && $response->status == "error") || !isset($response->data)) {
             return "0d 0h 0m";
         }
 
@@ -62,9 +62,9 @@ trait NodeInfo {
      */
     public function get_cpu() {
 
-        $response = $this->api_call('/node/hardware/cpu');
+        $response = $this->api_call("/node/hardware/cpu");
 
-        if (isset($response->error) || !isset($response->data)) {
+        if ((isset($response->status) && $response->status == "error") || !isset($response->data)) {
             return null;
         }
 
@@ -76,9 +76,9 @@ trait NodeInfo {
      */
     public function get_memory() {
 
-        $response = $this->api_call('/node/hardware/memory');
+        $response = $this->api_call("/node/hardware/memory");
 
-        if (isset($response->error) || !isset($response->data)) {
+        if ((isset($response->status) && $response->status == "error") || !isset($response->data)) {
             return null;
         }
 
@@ -90,9 +90,9 @@ trait NodeInfo {
      */
     public function get_disk() {
 
-        $response = $this->api_call('/node/hardware/disk');
+        $response = $this->api_call("/node/hardware/disk");
 
-        if (isset($response->error) || !isset($response->data)) {
+        if ((isset($response->status) && $response->status == "error") || !isset($response->data)) {
             return null;
         }
 

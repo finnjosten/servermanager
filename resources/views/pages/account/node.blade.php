@@ -67,7 +67,7 @@
                         <a data-tab-target="usage" class=""><i class="vlx-icon vlx-icon--square-poll-vertical"></i>Usage</a>
                         <a data-tab-target="network" class=""><i class="vlx-icon vlx-icon--ethernet"></i>Network</a>
                         <a data-tab-target="users" class=""><i class="vlx-icon vlx-icon--user"></i>Users</a>
-                        <a data-tab-target="web" class=""><i class="vlx-icon vlx-icon--globe"></i>Web</a>
+                        <a data-tab-target="web" class=""><i class="vlx-icon vlx-icon--globe"></i>Webapps</a>
                     </div>
 
                 </div>
@@ -146,7 +146,7 @@
                         <h3>Traffic</h3>
                         <p>{{ $node_data->hardware->network->traffic ?? "unkown" }}</p>
                         <h3>Uplink</h3>
-                        <p>{{ explode(",", ($node_data->hardware->network->uplink ?? ","))[0] ?? "Unkown" }}<small>({{ explode(",", ($node_data->hardware->network->uplink ?? ","))[1] ?? "Unkown" }})</small></p>
+                        <p>{{ explode(",", ($node_data->hardware->network->uplink ?? ","))[0] ?? "Unkown" }} <small>({{ explode(",", ($node_data->hardware->network->uplink ?? ","))[1] ?? "Unkown" }})</small></p>
                     </div>
                 </div>
 
@@ -196,7 +196,7 @@
                                     <i class="vlx-icon vlx-icon--xx-large vlx-icon--memory"></i>
                                 </div>
                                 <div class="vlx-text">
-                                    <h2>RAM</h2>
+                                    <h2>Memory</h2>
                                     <p>
                                         <span data-usage="ram">0</span> GB
                                         / {{$node_data->hardware->memory->size ?? "Unkown" }}
@@ -275,9 +275,9 @@
                                 <input value="{{ $port->from }}" disabled>
                                 <!-- on click do js call to remove port "/api/nodes/network/{node:id}/ports/{port}/delete" -->
                                 @if (in_array($port->port, $locked_ports))
-                                    <a class="btn btn--primary btn--small btn--disabled">Remove</a>
+                                    <a class="btn btn--danger btn--small btn--disabled">Remove</a>
                                 @else
-                                    <a class="btn btn--primary btn--small js-remove-port" data-port="{{ $port->port }}">Remove</a>
+                                    <a class="btn btn--danger btn--small js-remove-port" data-port="{{ $port->port }}">Remove</a>
                                 @endif
                             </div>
                         @endforeach
@@ -299,34 +299,282 @@
 
                 <div class="inner inner--web" data-tab-id="web">
                     <div class="vlx-block vlx-block--webapps">
-                        @foreach ($node_data->webapps as $webapp)
-                            <div class="vlx-card vlx-card--webapp">
-                                <div class="vlx-icon--wrapper">
-                                    @if ($webapp->type == "laravel")
-                                        <i class="vlx-icon vlx-icon--brand-laravel"></i>
-                                    @elseif ($webapp->type == "wordpress")
-                                        <i class="vlx-icon vlx-icon--brand-wordpress"></i>
-                                    @elseif ($webapp->type == "react")
-                                        <i class="vlx-icon vlx-icon--brand-react"></i>
-                                    @elseif ($webapp->type == "html")
-                                        <i class="vlx-icon vlx-icon--brand-html5"></i>
-                                    @else
-                                        <i class="vlx-icon vlx-icon--globe"></i>
+                        @if (isset($node_data->webapps))
+                            @foreach ($node_data->webapps as $webapp)
+                                <div class="vlx-card vlx-card--webapp js-toggle-modal" data-target-modal="webapp-modal" data-api-target="{{ $webapp->name }}">
+                                    <div class="vlx-icon--wrapper">
+                                        <i class="vlx-icon vlx-icon--xx-large
+                                            @if ($webapp->type == "laravel")
+                                                vlx-icon--brand-laravel
+                                            @elseif ($webapp->type == "wordpress")
+                                                vlx-icon--brand-wordpress
+                                            @elseif ($webapp->type == "react")
+                                                vlx-icon--brand-react
+                                            @elseif ($webapp->type == "html")
+                                                vlx-icon--brand-html5
+                                            @else
+                                                vlx-icon--globe
+                                            @endif
+                                        "></i>
+                                    </div>
+                                    <h3 class="vlx-card__title">{{ $webapp->meta->project_name ?? $webapp->name }}</h3>
+
+                                    @if (!empty($webapp->meta->public_address))
+                                        <div class="vlx-meta vlx-meta--public-address">
+                                            <i class="vlx-icon vlx-icon--link"></i>
+                                            <small>{{ $webapp->meta->public_address }}</small>
+                                        </div>
+                                    @endif
+                                    @if (!empty($webapp->location))
+                                        <div class="vlx-meta vlx-meta--location">
+                                            <i class="vlx-icon vlx-icon--folder"></i>
+                                            <small>{{ $webapp->location ?? null }}</small>
+                                        </div>
+                                    @endif
+
+                                    @if (!empty($webapp->meta->public_address))
+                                        <a class="vlx-floating-btn" href="{{ $webapp->meta->public_address }}" target="_blank">
+                                            <i class="vlx-icon vlx-icon--arrow-up-right-from-square vlx-icon--medium"></i>
+                                        </a>
                                     @endif
                                 </div>
-                                <h3>{{ $webapp->name }}</h3>
-                                <p>{{ $webapp->type }}</p>
+                            @endforeach
+                            <div class="vlx-card vlx-card--webapp-new js-toggle-modal" data-target-modal="webapp-modal-add">
+                                <div class="vlx-icon--wrapper">
+                                    <i class="vlx-icon vlx-icon--plus"></i>
+                                </div>
+                                <h3 class="vlx-card__title">New webapp</h3>
                             </div>
-                    @endforeach
+                        @endif
+                    </div>
                 </div>
 
             </div>
         </section>
 
+        <div class="vlx-outer-modal js-modal--webapp" id="vlx-webapp-modal">
+            <div class="vlx-modal vlx-modal--webapp">
+                <a class="vlx-close-btn js-close-modal">
+                    <div class="vlx-icon--wrapper">
+                        <i class="vlx-icon vlx-icon--xmark"></i>
+                    </div>
+                </a>
+                <form class="vlx-form">
+                    @csrf
+
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Project name</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="project_name" placeholder="Cool project">
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Public address</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="public_address" placeholder="https://project.test/">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">Folder name</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="name" placeholder="Webapp Name" readonly>
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Folder location</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="location" placeholder="/var/www/vhost/project.test" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Project Type</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="type" placeholder="Laravel" readonly>
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Creation date</label>
+                            <div class="vlx-input">
+                                <input type="date" data-key="created_at" placeholder="2000-01-01">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">Description</label>
+                            <div class="vlx-input">
+                                <textarea data-key="description"></textarea>
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Notes</label>
+                            <div class="vlx-input">
+                                <textarea data-key="notes"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Github</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="repository_url" placeholder="https://github.com/user/project">
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Environment</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="environment" placeholder="production">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group btn-group--left">
+                        <a class="btn btn--success btn--small js-save-webapp">Save</a>
+                        <a class="btn btn--danger btn--small js-delete-webapp">Delete</a>
+                    </div>
+
+                        {{--
+                            "name": "servermanager.vacso.cloud",
+                            "type": "laravel",
+                            "meta": {
+                                "project_name": "Server Manager",
+                                "public_address": "https://servermanager.vacso.cloud",
+                                "description": "Server Manager is a web application that allows you to manage your servers and services in a simple and easy way.",
+                                "created_at": "2024-09-28",
+                                "repository_url": "https://github.com/finnjosten/servermanager",
+                                "environment": "development",
+                                "notes": "This is a development version of the application. It is not recommended for production use."
+                            },
+                            "id": 0,
+                            "location": "/var/www/vhost/servermanager.vacso.cloud"
+                        --}}
+                </form>
+            </div>
+        </div>
+
+        <div class="vlx-outer-modal" id="vlx-webapp-modal-add">
+            <div class="vlx-modal vlx-modal--webapp">
+                <a class="vlx-close-btn js-close-modal">
+                    <div class="vlx-icon--wrapper">
+                        <i class="vlx-icon vlx-icon--xmark"></i>
+                    </div>
+                </a>
+                <form class="vlx-form" action="{{ route('api.node.webapp.add', $node->id) }}" method="POST">
+                    @csrf
+
+                    {{-- Domain --}}
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Subdomain</label>
+                            <div class="vlx-input">
+                                <input type="text" name="subdomain" placeholder="project">
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">domain</label>
+                            <div class="vlx-input">
+                                <select name="domain">
+                                    <option>vacso.cloud</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Github --}}
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <div class="vlx-input-box">
+                                <label class="h4">Github Link</label>
+                                <div class="vlx-input">
+                                    <input type="text" name="github_link" placeholder="https://github.com/user/project">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Git type</label>
+                            <div class="vlx-input">
+                                <select name="github_type">
+                                    <option value="clone">Clone</option>
+                                    <option value="template">Template</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Project Name --}}
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Project name</label>
+                            <div class="vlx-input">
+                                <input type="text" name="project_name" id="project_name" placeholder="Webapp Name">
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Folder location</label>
+                            <div class="vlx-input">
+                                <input class="js-auto-update" type="text" name="location" data-auto-update="project_name" data-auto-update-prefix="/var/www/vhost/" placeholder="/var/www/vhost/project.test" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Project Type --}}
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Project Type</label>
+                            <div class="vlx-input">
+                                <select name="type">
+                                    <option>Laravel</option>
+                                    <option>Wordpress</option>
+                                    <option>React</option>
+                                    <option>HTML</option>
+                                    <option>Docker</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">ENV File</label>
+                            <div class="vlx-input">
+                                <textarea data-key="env_file"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group btn-group--left">
+                        <a class="btn btn--success btn--small js-save-webapp">Save</a>
+                        <a class="btn btn--danger btn--small js-delete-webapp">Delete</a>
+                    </div>
+
+                        {{--
+                            "name": "servermanager.vacso.cloud",
+                            "type": "laravel",
+                            "meta": {
+                                "project_name": "Server Manager",
+                                "public_address": "https://servermanager.vacso.cloud",
+                                "description": "Server Manager is a web application that allows you to manage your servers and services in a simple and easy way.",
+                                "created_at": "2024-09-28",
+                                "repository_url": "https://github.com/finnjosten/servermanager",
+                                "environment": "development",
+                                "notes": "This is a development version of the application. It is not recommended for production use."
+                            },
+                            "id": 0,
+                            "location": "/var/www/vhost/servermanager.vacso.cloud"
+                        --}}
+                </form>
+            </div>
+        </div>
+
         <script>
-            const cpu_cores = {{ $node_data-> hardware -> cpu -> cpu_cores ?? 0 }};
-            const ram_size = {{ str_replace(" GB", "", ($node_data -> hardware -> memory -> size ?? "0 GB")) }};
-            const max_traffic = {{ trim(str_replace(["GB","TB"], "", ($node_data -> hardware -> network -> traffic ?? "0 GB"))) }};
+            const node_id = {{ $node->id }};
+            const cpu_cores = {{ $node_data->hardware->cpu->cpu_cores ?? 0 }};
+            const ram_size = {{ str_replace(" GB", "", ($node_data->hardware->memory->size ?? "0 GB")) }};
+            const max_traffic = {{ trim(str_replace(["GB","TB"], "", ($node_data->hardware->network->traffic ?? "0 GB"))) }};
             // This is your node endpoint and bearer token, this is used to request data from your nodes api.
             const serverApi = "{{ $node->endpoint }}";
             const bearerToken = "{{ decrypt($node->key) }}";
@@ -335,92 +583,8 @@
         <script src="/js/nodeusage.js"></script>
         <script src="/js/tabcontroller.js"></script>
         <script src="/js/servercheck.js"></script>
-        <script>
-
-            const addPortButton = document.getElementById('add-port');
-            const portsTable = document.querySelector('.js-ports-table');
-
-            addPortButton.addEventListener('click', () => {
-                const port = document.getElementById('port').value;
-                let action = document.getElementById('action').value.toUpperCase();
-                console.log(action);
-
-                if (!action) {
-                    action = 'ALLOW';
-                }
-                let from = document.getElementById('from').value;
-                if (!from) {
-                    from = 'Anywhere';
-                }
-
-                if (!port) {
-                    toastr.error('Port is required');
-                    return;
-                }
-
-                fetch(`/api/nodes/{{ $node->id }}/network/${port}/add?action=${action}&from=${from}`)
-                .then(response => {
-                    if (response.ok) {
-                        // Show success toast
-                        toastr.success(`Port ${port} added`);
-
-                        // Insert new row
-                        createRowElement(port, action, from);
-
-                        // Clear the inputs
-                        document.getElementById('port').value = '';
-                        document.getElementById('action').value = '';
-                        document.getElementById('from').value = '';
-
-                        return response.json();
-                    } else {
-                        toastr.error(`Failed to add port ${port}`);
-                    }
-                });
-            });
-
-            function createRowElement(port, action, from) {
-                // Get the vlx-row--footer element and add a row above it
-                let newRow = document.createElement('div');
-                newRow.classList.add('vlx-row', 'vlx-row--port');
-                newRow.innerHTML = `<input value="${port}" disabled><input value="${action}" disabled><input value="${from}" disabled><a class="btn btn--primary btn--small js-remove-port" data-port="${port}">Remove</a>`;
-                portsTable.insertBefore(newRow, portsTable.querySelector('.vlx-row--footer'));
-
-                initRemovePortButtons();
-            }
-
-
-            // function to reindex and redo the event listeners
-
-            initRemovePortButtons();
-
-            function initRemovePortButtons() {
-                let removePortButtons = document.querySelectorAll('.js-remove-port');
-
-                removePortButtons.forEach(button => {
-                    button.addEventListener('click', (event) => {
-                        let port = event.target.getAttribute('data-port');
-                        port = port.replace('/udp', '').replace('/tcp', '');
-                        removePort(button, port);
-                    });
-                });
-            }
-
-            function removePort(button, port) {
-                button.parentElement.classList.add("--loading");
-                fetch(`/api/nodes/{{ $node->id }}/network/${port}/delete`)
-                .then(response => {
-                    if (response.ok) {
-                        button.parentElement.remove();
-                        toastr.success(`Port ${port} removed`);
-                        return response.json();
-                    } else {
-                        button.parentElement.classList.remove('--loading');
-                        toastr.error(`Failed to remove port ${port}`);
-                    }
-                });
-            }
-        </script>
+        <script src="/js/portmanager.js"></script>
+        <script src="/js/modal.js"></script>
     </main>
 
 @endsection

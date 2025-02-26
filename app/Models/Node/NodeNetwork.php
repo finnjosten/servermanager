@@ -16,9 +16,9 @@ trait NodeNetwork {
      */
     public function get_ports() {
 
-        $response = $this->api_call('/network');
+        $response = $this->api_call("/network");
 
-        if (isset($response->error) || !isset($response->data)) {
+        if ((isset($response->status) && $response->status == "error") || !isset($response->data)) {
             return [];
         }
 
@@ -50,13 +50,13 @@ trait NodeNetwork {
 
     public function add_port($port, $action, $from) {
 
-        $response = $this->api_call('/network/store', 'POST', [
+        $response = $this->api_call("/network/store", 'POST', [
             'port' => $port,
             'action' => $action,
             'from' => $from
         ]);
 
-        if ($response->status == "error") {
+        if ((isset($response->status) && $response->status == "error")) {
             return ['status' => 'error', 'message' => $response->message];
         }
 
@@ -67,7 +67,7 @@ trait NodeNetwork {
 
         $response = $this->api_call('/network/locked');
 
-        if (isset($response->error) || !isset($response->data)) {
+        if ((isset($response->status) && $response->status == "error") || !isset($response->data)) {
             return [];
         }
 
@@ -80,9 +80,9 @@ trait NodeNetwork {
             $port = explode('/', $port)[0];
         }
 
-        $response = $this->api_call('/network/' . $port . '/destory', 'POST');
+        $response = $this->api_call("/network/$port/destory", 'POST');
 
-        if ($response->status == "error") {
+        if ((isset($response->status) && $response->status == "error")) {
             return ['status' => 'error', 'message' => $response->message];
         }
 

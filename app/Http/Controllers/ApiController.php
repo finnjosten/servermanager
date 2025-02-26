@@ -86,7 +86,7 @@ class ApiController extends Controller
     public function deleteNodePort(Node $node, $port) {
         $response = vlx_cast_to_object($node->delete_port($port));
 
-        if ($response->status == "error") {
+        if ((isset($response->status) && $response->status == "error")) {
             return response()->json(["status" => "error", 'message' => $response->message], 400);
         }
 
@@ -105,10 +105,48 @@ class ApiController extends Controller
 
         $response = vlx_cast_to_object($node->add_port($port, $action, $from));
 
-        if ($response->status == "error") {
+        if ((isset($response->status) && $response->status == "error")) {
             return response()->json(["status" => "error", 'message' => $response->message], 400);
         }
 
         return response()->json(["status" => "success", 'message' => 'Port has been added'], 200);
+    }
+
+
+
+
+    public function getWebapp(Node $node, $id) {
+
+        $response = vlx_cast_to_object($node->get_webapp($id));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        return response()->json(["status" => "success", 'data' => $response->data], 200);
+    }
+
+
+    public function saveWebapp(Node $node, Request $request, $id) {
+
+        $response = vlx_cast_to_object($node->save_webapp($id, request()->all()));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        return response()->json(["status" => "success", 'message' => 'Webapp has been saved'], 200);
+    }
+
+    public function addWebapp(Node $node, Request $request) {
+
+        $response = vlx_cast_to_object($node->add_webapp(request()->all()));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        return response()->json(["status" => "success", 'message' => 'Webapp has been added'], 200);
+
     }
 }

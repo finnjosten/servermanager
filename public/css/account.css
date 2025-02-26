@@ -89,18 +89,8 @@ html:has(.vlx-auth) { background-color: var(--bg-clr-dark); }
 
 /** Account Content **/
 
-.vlx-block--servers .inner { display: flex; justify-content: center; align-items: center; }
-
 
 
 /*** Account Content > View ***/
 
-.page--account.view .form { margin: 30px 0; width: calc(100% - 60px); }
-.page--account.view .form__box { width: 100%; margin-bottom: 30px; }
-.page--account.view .form__box input:not([type="submit"]) { width: 100%; margin-top: 15px; padding: 5px; border-radius: 10px; border: 0; outline: 0 !important; --fs: 16px; background-color: var(--bg-clr-light); }
-.page--account.view .form__box select { width: 100%; margin-top: 15px; padding: 5px; border-radius: 10px; border: 0; outline: 0 !important; --fs: 16px; background-color: var(--bg-clr-light); }
-.page--account.view .form__box input[type="submit"] { margin-top: 15px; }
-.page--account.view .form__box *:is(input[readonly],textarea[readonly]) { cursor: not-allowed; }
-.page--account.view .form__box textarea { width: 100%; min-width: 250px; max-width: 1572px; margin-top: 15px; padding: 5px; border-radius: 10px; border: 0; outline: 0 !important; --fs: 16px; background-color: var(--bg-clr-light); min-height: 200px; max-height: 450px; }
-.page--account.view .form__box:has(.col) { display: flex; gap: 30px; }
-.page--account.view .form__box .col { width: 50%; }
+

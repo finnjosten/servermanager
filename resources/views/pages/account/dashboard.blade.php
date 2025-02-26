@@ -21,7 +21,7 @@
             <div class="container">
                 <div class="vlx-text vlx-text--center">
                     <h1>Server Manager</h1>
-                    <small id="upate-time">Updating in </small>
+                    <small id="update-time">Updating in </small>
                 </div>
             </div>
         </section>

@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="form__box">
-        <button type="submit" name="add" class="btn btn--success btn--small">Save<i class="vlx-icon vlx-icon--floppy-disk vlx-icon--small"></i></button>
+        <button type="submit" name="add" class="btn btn--success btn--small"><i class="vlx-icon vlx-icon--floppy-disk vlx-icon--small"></i>Save</button>
     </div>
 
 </form>
