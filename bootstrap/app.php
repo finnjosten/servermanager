@@ -2,6 +2,7 @@
 
 use App\Console\Commands\CloneDb;
 use App\Http\Middleware\Maintenance;
+use App\Http\Middleware\Killswitch;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\CorsHeader;
 use Illuminate\Foundation\Application;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->append(Killswitch::class);
         $middleware->append(Maintenance::class);
         $middleware->append(CorsHeader::class);
 

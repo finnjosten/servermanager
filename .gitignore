@@ -21,3 +21,5 @@ yarn-error.log
 .devdbrc
 /resources/assets/keys
 meta.json
+
+/storage/killswitch

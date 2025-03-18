@@ -46,7 +46,8 @@ function updateUsage() {
                 document.querySelector('#network-bar .bar').style.width = (parseFloat(network.current) / (max_traffic * 100) * 100).toFixed(0) + "%";
 
             } catch (e) {
-                toastr.error('Error updating usage. Refresh the page to start updating again.');
+                notyf.open({type: 'error', message: 'Error updating usage. Refresh the page to start updating again.'});
+                //toastr.error('Error updating usage. Refresh the page to start updating again.');
                 console.error(e);
                 return;
             }

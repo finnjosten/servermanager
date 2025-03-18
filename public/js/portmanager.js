@@ -15,7 +15,8 @@ addPortButton.addEventListener('click', () => {
     }
 
     if (!port) {
-        toastr.error('Port is required');
+        notyf.open({type: 'error', message: 'Port is required'});
+        //toastr.error('Port is required');
         return;
     }
 
@@ -23,7 +24,8 @@ addPortButton.addEventListener('click', () => {
         .then(response => {
             if (response.ok) {
                 // Show success toast
-                toastr.success(`Port ${port} added`);
+                notyf.open({type: 'success', message: `Port "${port}" added`});
+                //toastr.success(`Port "${port}" added`);
 
                 // Insert new row
                 createRowElement(port, action, from);
@@ -35,7 +37,8 @@ addPortButton.addEventListener('click', () => {
 
                 return response.json();
             } else {
-                toastr.error(`Failed to add port ${port}`);
+                notyf.open({type: 'error', message: `Failed to add port "${port}"`});
+                //toastr.error(`Failed to add port "${port}"`);
             }
         });
 });
@@ -44,7 +47,7 @@ function createRowElement(port, action, from) {
     // Get the vlx-row--footer element and add a row above it
     let newRow = document.createElement('div');
     newRow.classList.add('vlx-row', 'vlx-row--port');
-    newRow.innerHTML = `<input value="${port}" disabled><input value="${action}" disabled><input value="${from}" disabled><a class="btn btn--primary btn--small js-remove-port" data-port="${port}">Remove</a>`;
+    newRow.innerHTML = `<input value="${port}" disabled><input value="${action}" disabled><input value="${from}" disabled><a class="btn btn--danger btn--small js-remove-port" data-port="${port}">Remove</a>`;
     portsTable.insertBefore(newRow, portsTable.querySelector('.vlx-row--footer'));
 
     initRemovePortButtons();
@@ -73,11 +76,13 @@ function removePort(button, port) {
         .then(response => {
             if (response.ok) {
                 button.parentElement.remove();
-                toastr.success(`Port ${port} removed`);
+                notyf.open({type: 'success', message: `Port "${port}" removed`});
+                //toastr.success(`Port "${port}" removed`);
                 return response.json();
             } else {
                 button.parentElement.classList.remove('--loading');
-                toastr.error(`Failed to remove port ${port}`);
+                notyf.open({type: 'error', message: `Failed to remove port "${port}"`});
+                //toastr.error(`Failed to remove port "${port}"`);
             }
         });
 }

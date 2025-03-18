@@ -22,7 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Logout
     // Get disabled due to safety
-    //Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
     // Post only due to safety
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
