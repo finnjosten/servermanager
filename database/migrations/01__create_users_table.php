@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->text('datalix_token')->nullable();
             $table->boolean("blocked")->default(false)->nullable();
             $table->boolean("verified")->default(false)->nullable();
             $table->boolean("admin")->default(false)->nullable();
-            $table->string('friend_ids')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

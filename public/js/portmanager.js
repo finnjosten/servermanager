@@ -15,8 +15,7 @@ addPortButton.addEventListener('click', () => {
     }
 
     if (!port) {
-        notyf.open({type: 'error', message: 'Port is required'});
-        //toastr.error('Port is required');
+        toastError('Port is required');
         return;
     }
 
@@ -24,8 +23,7 @@ addPortButton.addEventListener('click', () => {
         .then(response => {
             if (response.ok) {
                 // Show success toast
-                notyf.open({type: 'success', message: `Port "${port}" added`});
-                //toastr.success(`Port "${port}" added`);
+                toastSuccess(`Port "${port}" added`);
 
                 // Insert new row
                 createRowElement(port, action, from);
@@ -37,8 +35,7 @@ addPortButton.addEventListener('click', () => {
 
                 return response.json();
             } else {
-                notyf.open({type: 'error', message: `Failed to add port "${port}"`});
-                //toastr.error(`Failed to add port "${port}"`);
+                toastError('Failed to add port "${port}"');
             }
         });
 });
@@ -76,13 +73,12 @@ function removePort(button, port) {
         .then(response => {
             if (response.ok) {
                 button.parentElement.remove();
-                notyf.open({type: 'success', message: `Port "${port}" removed`});
-                //toastr.success(`Port "${port}" removed`);
+                toastSuccess(`Port "${port}" removed`);
                 return response.json();
             } else {
                 button.parentElement.classList.remove('--loading');
-                notyf.open({type: 'error', message: `Failed to remove port "${port}"`});
-                //toastr.error(`Failed to remove port "${port}"`);
+
+                toastError(`Failed to remove port "${port}"`);
             }
         });
 }

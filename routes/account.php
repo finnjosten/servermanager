@@ -15,10 +15,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dash/', fn() => redirect()->route('dashboard.main') );
     Route::get('/dashboard/', fn() => redirect()->route('dashboard.main') );
 
-    // Add a prefix
-
     // Dashboard
     Route::view('/', 'pages.account.dashboard')->name('dashboard.main');
+
+    // Profile
+    Route::get( '/profile',         [UserController::class, 'index']    )->name('profile');
+    Route::get( '/profile/edit',    [UserController::class, 'edit']     )->name('profile.edit');
+    Route::post('/profile/edit',    [UserController::class, 'update']   )->name('profile.update');
+    Route::get( '/profile/delete',  [UserController::class, 'trash']    )->name('profile.trash');
+    Route::post('/profile/delete',  [UserController::class, 'destroy']  )->name('profile.destroy');
 
     // Logout
     // Get disabled due to safety

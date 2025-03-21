@@ -101,16 +101,16 @@
             </script>
             <script>
                 @if (session()->has('info'))
-                    notyf.open({type: 'info', message: "{{ session()->get('info') }}"});
+                    toastInfo("{{ session()->get('info') }}");
                 @endif
                 @if (session()->has('success'))
-                    notyf.open({type: 'success', message: "{{ session()->get('success') }}"});
+                    toastSuccess("{{ session()->get('success') }}");
                 @endif
                 @if (session()->has('warning'))
-                    notyf.open({type: 'warning', message: "{{ session()->get('warning') }}"});
+                    toastWarning("{{ session()->get('warning') }}");
                 @endif
                 @if (session()->has('error'))
-                    notyf.open({type: 'error', message: "{{ session()->get('error') }}"});
+                    toastError("{{ session()->get('error') }}");
                 @endif
             </script>
         </div>

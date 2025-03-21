@@ -9,17 +9,20 @@ use Illuminate\Support\Facades\Crypt;
 use Spatie\Ssh\Ssh;
 use Exception;
 
-require_once 'Node/NodeInfo.php';
-require_once 'Node/NodeNetwork.php';
-require_once 'Node/NodeUser.php';
-require_once 'Node/NodeWebapp.php';
+use App\Traits\NodeInfo;
+use App\Traits\NodeNetwork;
+use App\Traits\NodeUser;
+use App\Traits\NodeWebapp;
+use App\Traits\NodeWebserver;
 
 // Node as like a server node
 class Node extends Model {
+
     use NodeInfo;
     use NodeNetwork;
     use NodeUser;
     use NodeWebapp;
+    use NodeWebserver;
     use HasFactory;
 
     protected $fillable = [
@@ -28,6 +31,7 @@ class Node extends Model {
         'name',
         'endpoint',
         'key',
+        'datalix_id',
         'user_id',
     ];
 

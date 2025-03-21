@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('endpoint');
             $table->string('key', 512);
+            $table->string('datalix_id')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

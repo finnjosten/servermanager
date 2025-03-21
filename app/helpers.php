@@ -7,6 +7,10 @@
     /**
      * Set meta data for a page
      */
+
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Crypt;
+
     if (! function_exists('vlx_set_page_meta')) {
         function vlx_set_page_meta($custom = null) {
             global $site;
@@ -57,6 +61,18 @@
             } catch (\Exception $e) {
                 return false;
             }
+        }
+    }
+
+    if (! function_exists('vlxEncrypt')) {
+        function vlxEncrypt($string) {
+            return Crypt::encrypt($string);
+        }
+    }
+
+    if (! function_exists('vlxDecrypt')) {
+        function vlxDecrypt($string) {
+            return Crypt::decrypt($string);
         }
     }
 
@@ -222,8 +238,12 @@
     if (!function_exists('vlx_end_slash_it')) {
         function vlx_end_slash_it($string) {
 
+            Log::debug($string);
+
             $string = rtrim($string, '/');
             $string .= '/';
+
+            Log::debug($string);
 
             return preg_replace('#/+#', '/', $string);
 

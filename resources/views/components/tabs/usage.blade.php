@@ -1,7 +1,6 @@
 <div class="inner inner--usage" data-tab-id="usage">
     <div class="block cpu">
 
-
         <div class="block__usage block__usage--icon">
             <div class="heading">
                 <div class="vlx-icon--wrapper">
@@ -35,9 +34,11 @@
                 </div>
             </div>
         @endfor
+
     </div>
 
     <div class="block ram">
+
         <div class="block__usage block__usage--icon">
             <div class="heading">
                 <div class="vlx-icon--wrapper">
@@ -56,9 +57,11 @@
                 <div class="bar" style="width: 0%;"></div>
             </div>
         </div>
+
     </div>
 
     <div class="block disk">
+
         <div class="block__usage block__usage--icon">
             <div class="heading">
                 <div class="vlx-icon--wrapper">
@@ -77,9 +80,18 @@
                 <div class="bar" style="width: 0%;"></div>
             </div>
         </div>
+
     </div>
 
     <div class="block network">
+
+        @php
+            $node_uplink = $node_data->hardware->network->uplink ?? "unkown";
+            if ($node_uplink != "unkown") {
+                $node_uplink = explode(',', $node_uplink)[1];
+            }
+        @endphp
+
         <div class="block__usage block__usage--icon">
             <div class="heading">
                 <div class="vlx-icon--wrapper">
@@ -98,6 +110,43 @@
                 <div class="bar" style="width: 0%;"></div>
             </div>
         </div>
+
+        <div class="block__usage block__usage--icon">
+            <div class="vlx-text">
+                <h2>Network in</h2>
+                <p>
+                    <span data-usage="network_in">0 Kbit/s</span>
+                    <small>({{ $node_uplink }})</small>
+                </p>
+            </div>
+            <div id="network-in-bar" class="progress-bar">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="block__usage block__usage--icon">
+            <div class="vlx-text">
+                <h2>Network out</h2>
+                <p>
+                    <span data-usage="network_out">0 Kbit/s</span>
+                    <small>({{ $node_uplink }})</small>
+                </p>
+            </div>
+            <div id="network-out-bar" class="progress-bar">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="block span--4">
+        @if ($node->datalix_id)
+            <p>Datalix ID is present and the SM will try to use the Datalix Websocket for usage.</p>
+            <p>Using datalix usage means the CPU, RAM and Net updates are faster.<br>But the SM will use the node api for CPU Cores, Disk and Net Total usage but dont update as fast.</p>
+        @else
+            <p>Datalix ID is <i>not</i> present. The SM will use the nodes api to retrieve usage.</p>
+            <p>CPU, Ram and Net usage will not be as fast. Net in and Net out usage will not work!</p>
+        @endif
     </div>
 
 </div>

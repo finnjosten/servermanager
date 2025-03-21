@@ -149,4 +149,94 @@ class ApiController extends Controller
         return response()->json(["status" => "success", 'message' => 'Webapp has been added'], 200);
 
     }
+
+
+
+
+    public function getWebserver(Node $node, $id) {
+
+        $response = vlx_cast_to_object($node->get_webserver_config($id));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        return response()->json(["status" => "success", 'data' => $response->data], 200);
+    }
+
+
+    public function saveWebserver(Node $node, Request $request, $id) {
+
+        $response = vlx_cast_to_object($node->save_webserver_config($id, request()->all()));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        return response()->json(["status" => "success", 'message' => 'Webserver has been saved'], 200);
+    }
+
+    public function removeWebserver(Node $node, $id) {
+
+        $response = vlx_cast_to_object($node->remove_webserver_config($id));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        return response()->json(["status" => "success", 'message' => 'Webserver has been removed'], 200);
+    }
+
+    public function certbotWebserver(Node $node, $id) {
+
+        $response = vlx_cast_to_object($node->certbot_webserver_config($id));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json([
+                "status" => "error",
+                'message' => $response->message,
+                'error' => $response->error ?? null,
+            ], 400);
+        }
+
+        return response()->json(["status" => "success", 'message' => 'Webserver has been updated'], 200);
+    }
+
+    public function enableWebserver(Node $node, $id) {
+
+        $response = vlx_cast_to_object($node->enable_webserver_config($id));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        return response()->json(["status" => "success", 'message' => 'Webserver has been enabled'], 200);
+    }
+
+    public function disableWebserver(Node $node, $id) {
+
+        $response = vlx_cast_to_object($node->disable_webserver_config($id));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        return response()->json(["status" => "success", 'message' => 'Webserver has been disabled'], 200);
+    }
+
+    public function addWebserver(Node $node, Request $request) {
+
+        $response = vlx_cast_to_object($node->add_webserver_config(request()->all()));
+
+        if ((isset($response->status) && $response->status == "error")) {
+            return response()->json([
+                "status" => "error",
+                'message' => $response->message,
+                'error' => $response->error ?? null,
+            ], 400);
+        }
+
+        return response()->json(["status" => "success", 'message' => 'Webserver has been added'], 200);
+
+    }
 }

@@ -17,7 +17,7 @@ class CorsHeader
     public function handle(Request $request, Closure $next)
     {
         // Get the origin of the request
-        $allowedOrigins = ['https://servermanager.vacso.cloud']; // Add your frontend domain here
+        $allowedOrigins = [vlx_get_env_string("APP_URL")]; // Add your frontend domain here
 
         $origin = $request->headers->get('Origin');
 

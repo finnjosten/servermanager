@@ -10,20 +10,32 @@
 
 @section('content')
 
+@php
+    use \Illuminate\Support\Facades\Route;
+    $route_home_exists = Route::has('home');
+    $route_dashboard_exists = Route::has('dashboard.main');
+@endphp
+
 <main>
-    <section class="block block--error">
+    <section class="vlx-block vlx-block--error">
         <div class="container">
-            <div class="inner d-grid--center">
+            <div class="inner d-flex--center">
                 <div class="text">
                     <h1>{{ $code }}</h1>
-                    <h2>{{ $message }}</h2>
+                    <p class="h2">{{ $message }}</p>
                     <div class="btn-group">
                         @auth
-                            <a href="{{ route('home') }}" class="btn btn--primary">Go home!</a>
-                            <a href="{{ route('dashboard.main') }}" class="btn btn--primary">Go to your dashboard!</a>
+                            @if ($route_home_exists)
+                                <a href="{{ route('home') }}" class="btn btn--primary btn--small">Go home!</a>
+                            @endif
+                            @if ($route_dashboard_exists)
+                                <a href="{{ route('dashboard.main') }}" class="btn btn--primary btn--small">Go to your dashboard!</a>
+                            @endif
                         @endauth
                         @guest
-                            <a href="{{ route('home') }}" class="btn btn--primary">Go home!</a>
+                            @if ($route_home_exists)
+                                <a href="{{ route('home') }}" class="btn btn--primary btn--small">Go home!</a>
+                            @endif
                         @endguest
                     </div>
                 </div>

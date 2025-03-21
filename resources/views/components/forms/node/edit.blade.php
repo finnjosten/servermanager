@@ -1,32 +1,44 @@
-<form method="POST" class="form" action="{{ route('dashboard.node.update', $node->id) }}">
+<form method="POST" class="vlx-form" action="{{ route('dashboard.node.update', $node->id) }}">
     @csrf
 
-    <div class="form__box">
-        <h3>Name</h3>
-        <input required type="text" name="name" value="{{ $node->name }}" placeholder="The name of the node">
-    </div>
-    <div class="form__box">
-        <div class="col">
-            <h3>IPv4</h3>
+    <div class="vlx-form__box vlx-form__box--hor">
+        <div class="vlx-input-box">
+            <label class="h4">Name</label>
+            <input required type="text" name="name" value="{{ $node->name }}" placeholder="The name of the node">
+        </div>
+        <div class="vlx-input-box">
+            <label class="h4">IPv4</label>
             <input required type="text" name="ipv4" value="{{ $node->ipv4 }}" placeholder="127.0.0.1">
         </div>
-        <div class="col">
-            <h3>FQDN</h3>
+    </div>
+
+    <div class="vlx-form__box vlx-form__box--hor">
+        <div class="vlx-input-box">
+            <label class="h4">FQDN</label>
             <input required type="text" name="fqdn" value="{{ $node->fqdn }}" placeholder="server.domain.com">
         </div>
-    </div>
-    <div class="form__box">
-        <div class="col">
-            <h3>Endpoint</h3>
+        <div class="vlx-input-box">
+            <label class="h4">Endpoint</label>
             <input required type="text" name="endpoint" value="{{ $node->endpoint }}" placeholder="https://api.domain.com/api/">
         </div>
-        <div class="col">
-            <h3>API Key</h3>
+    </div>
+
+    <div class="vlx-form__box">
+        <div class="vlx-input-box">
+            <label class="h4">API Key</label>
             <input required type="text" name="key" value="{{ vlxIsEncrypted($node->key) ? Crypt::decrypt($node->key) : $node->key }}" >
         </div>
+        <div class="vlx-input-box">
+            <label class="h4">Datalix id</label>
+            <input type="text" name="datalix_id" value="{{ vlxIsEncrypted($node->datalix_id) ? Crypt::decrypt($node->datalix_id) : $node->datalix_id }}" >
+        </div>
     </div>
-    <div class="form__box">
-        <button type="submit" name="add" class="btn btn--success btn--small"><i class="vlx-icon vlx-icon--floppy-disk vlx-icon--small"></i>Update</button>
+
+    <div class="vlx-form__box">
+        <button type="submit" name="update" class="btn btn--success btn--small">
+            <i class="vlx-icon vlx-icon--floppy-disk vlx-icon--small"></i>
+            Update
+        </button>
     </div>
 
 </form>

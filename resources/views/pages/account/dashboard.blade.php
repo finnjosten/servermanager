@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('show-nav', 'false')
+@section('show-nav', 'true')
 
 <!-- Page head -->
 @section('head')

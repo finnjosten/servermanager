@@ -60,3 +60,98 @@ initAutoUpdater = () => {
     });
 
 }
+
+
+
+function toastSuccess(message, second_message) {
+    if (isToastrAvailable()) {
+        toastr.success(message);
+
+        if (second_message) {
+            toastr.success(second_message);
+        }
+    }
+
+    if (isNotyfAvailable()) {
+        notyf.open({type: 'success', message: message});
+
+        if (second_message) {
+            notyf.open({type: 'success', message: second_message});
+        }
+    }
+
+    console.log(message, second_message);
+}
+
+
+function toastInfo(message, second_message) {
+    if (isToastrAvailable()) {
+        toastr.info(message);
+
+        if (second_message) {
+            toastr.info(second_message);
+        }
+    }
+
+    if (isNotyfAvailable()) {
+        notyf.open({type: 'info', message: message});
+
+        if (second_message) {
+            notyf.open({type: 'info', message: second_message});
+        }
+    }
+
+    console.log(message, second_message);
+}
+
+
+function toastWarning(message, second_message) {
+    if (isToastrAvailable()) {
+        toastr.warning(message);
+
+        if (second_message) {
+            toastr.warning(second_message);
+        }
+    }
+
+    if (isNotyfAvailable()) {
+        notyf.open({type: 'warning', message: message});
+
+        if (second_message) {
+            notyf.open({type: 'warning', message: second_message});
+        }
+    }
+
+    console.warn(message, second_message);
+}
+
+
+function toastError(message, second_message) {
+    if (isToastrAvailable()) {
+        toastr.error(message);
+
+        if (second_message) {
+            toastr.error(second_message);
+        }
+    }
+
+    if (isNotyfAvailable()) {
+        notyf.open({type: 'error', message: message});
+
+        if (second_message) {
+            notyf.open({type: 'error', message: second_message});
+        }
+    }
+
+    console.error(message, second_message);
+}
+
+
+// Check if toastr or notyf are defined and available before using them
+function isToastrAvailable() {
+    return typeof toastr !== 'undefined' && toastr !== null;
+}
+
+function isNotyfAvailable() {
+    return typeof notyf !== 'undefined' && notyf !== null;
+}

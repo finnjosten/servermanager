@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('show-nav', 'false')
+@section('show-nav', 'true')
 
 <!-- Page head -->
 @section('head')
@@ -16,21 +16,24 @@
 @section('content')
 
     <main class="page page--account view view--menu">
-        <section class="vlx-for">
-            <div class="container">
-                <div class="content">
+        <section class="vlx-block vlx-block--form">
+            <div class="container container--x-small">
+
+                <div class="vlx-block__header">
                     <div class="btn-group btn-group--left">
                         @if($mode != "create")
-                            <a class="btn btn--primary btn--small" href="{{ route('dashboard.node', $node->id) }}"><i class="vlx-icon vlx-icon--arrow-left vlx-icon--small"></i>Go back</a>
+                            <a class="btn btn--warning btn--small" href="{{ route('dashboard.node', $node->id) }}"><i class="vlx-icon vlx-icon--arrow-left vlx-icon--small"></i>Go back</a>
                         @else
-                            <a class="btn btn--primary btn--small" href="{{ route('dashboard.main') }}"><i class="vlx-icon vlx-icon--arrow-left vlx-icon--small"></i>Go back</a>
+                            <a class="btn btn--warning btn--small" href="{{ route('dashboard.main') }}"><i class="vlx-icon vlx-icon--arrow-left vlx-icon--small"></i>Go back</a>
                         @endif
                         @if($mode == "edit")
                             <a class="btn btn--danger btn--small" href="{{ route('dashboard.node.trash', $node->id) }}"><i class="vlx-icon vlx-icon--trash vlx-icon--small"></i>Delete</a>
                         @elseif($mode == "delete")
                         @endif
                     </div>
+                </div>
 
+                <div class="inner">
                     @if($mode == 'delete')
                         @include('components.forms.node.trash', ['node' => $node] )
                     @elseif($mode == 'edit')
@@ -38,7 +41,6 @@
                     @elseif($mode == 'create')
                         @include('components.forms.node.create')
                     @endif
-
                 </div>
 
             </div>

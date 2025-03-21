@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('show-nav', 'false')
+@section('show-nav', 'true')
 
 <!-- Page head -->
 @section('head')
@@ -13,12 +13,37 @@
 @section('content')
 
     @php
-
         $node_data = $node->get_all();
 
+        if (auth()->user()->datalix_token) {
+            $datalix_token = vlxIsEncrypted(auth()->user()->datalix_token) ? vlxDecrypt(auth()->user()->datalix_token) : auth()->user()->datalix_token;
+        } else {
+            $datalix_token = "";
+        }
+
+        if ($node->datalix_id) {
+            $datalix_id = vlxIsEncrypted($node->datalix_id) ? vlxDecrypt($node->datalix_id) : $node->datalix_id;
+        } else {
+            $datalix_id = "";
+        }
     @endphp
 
     <main class="node-overview">
+
+        <script>
+            const node_id = {{ $node->id }};
+            const cpu_cores = {{ $node_data->hardware->cpu->cpu_cores ?? 0 }};
+            const ram_size = {{ str_replace(" GB", "", ($node_data->hardware->memory->size ?? "0 GB")) }};
+            const max_traffic = {{ trim(str_replace(["GB","TB"], "", ($node_data->hardware->network->traffic ?? "0 GB"))) }};
+            const uplink = '{{ $node_data->hardware->network->uplink ?? 0 }}';
+            // This is your node endpoint and bearer token, this is used to request data from your nodes api.
+            const serverApi = "{{ $node->endpoint }}";
+            const bearerToken = "{{ vlxDecrypt($node->key) }}";
+            const uses_datalix = {{ $node->datalix_id ? 'true' : 'false' }};
+            const datalix_id = '{{ $datalix_id }}';
+            const datalix_token = '{{ $datalix_token }}';
+        </script>
+
         <section class="vlx-header vlx-header--server">
             <div class="container">
                 <div class="inner">
@@ -306,15 +331,178 @@
             </div>
         </div>
 
-        <script>
-            const node_id = {{ $node->id }};
-            const cpu_cores = {{ $node_data->hardware->cpu->cpu_cores ?? 0 }};
-            const ram_size = {{ str_replace(" GB", "", ($node_data->hardware->memory->size ?? "0 GB")) }};
-            const max_traffic = {{ trim(str_replace(["GB","TB"], "", ($node_data->hardware->network->traffic ?? "0 GB"))) }};
-            // This is your node endpoint and bearer token, this is used to request data from your nodes api.
-            const serverApi = "{{ $node->endpoint }}";
-            const bearerToken = "{{ decrypt($node->key) }}";
-        </script>
+        <div class="vlx-outer-modal js-modal--webserver" id="vlx-webserver-modal">
+            <div class="vlx-modal vlx-modal--webserver">
+                <a class="vlx-close-btn js-close-modal">
+                    <div class="vlx-icon--wrapper">
+                        <i class="vlx-icon vlx-icon--xmark"></i>
+                    </div>
+                </a>
+                <form class="vlx-form">
+                    @csrf
+
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Root</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="root" placeholder="/var/www/vhost/site.vasco.cloud" readonly>
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Proxy</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="proxy" placeholder="http://localhost:80/" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Ports</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="ports" placeholder="80, 443" readonly>
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Server name</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="server_name" placeholder="site.vacso.cloud" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">SSL</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="ssl" placeholder="True" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box vlx-form__box--hor">
+                        <div class="vlx-input-box">
+                            <label class="h4">Cert location</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="cert" placeholder="/etc/letsencrypt/live/site.vacso.cloud/cert.pem" readonly>
+                            </div>
+                        </div>
+                        <div class="vlx-input-box">
+                            <label class="h4">Key location</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="key" placeholder="/etc/letsencrypt/live/site.vacso.cloud/key.pem" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">Content</label>
+                            <div class="vlx-input">
+                                <textarea data-key="content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group btn-group--left">
+                        <a class="btn btn--warning btn--small js-disable-webserver">Disable config</a>
+                        <a class="btn btn--warning btn--small js-enable-webserver">Enable config</a>
+                    </div>
+
+                    <div class="btn-group btn-group--left">
+                        <a class="btn btn--info btn--small js-certbot-webserver">Run certbot</a>
+                    </div>
+
+                    <div class="btn-group btn-group--left wst--small">
+                        <a class="btn btn--success btn--small js-save-webserver">Save</a>
+                        <a class="btn btn--danger btn--small js-delete-webserver">Delete</a>
+                    </div>
+
+                        {{--
+                            "airsoft.vacso.cloud.conf": {
+                                "root": "/var/www/vhost/airsoft.vacso.cloud/public",
+                                "proxy": null,
+                                "ports": [
+                                    "443",
+                                    "80"
+                                ],
+                                "server_name": "airsoft.vacso.cloud",
+                                "ssl": {
+                                    "enabled": true,
+                                    "cert": "/etc/letsencrypt/live/airsoft.vacso.cloud/fullchain.pem",
+                                    "key": "/etc/letsencrypt/live/airsoft.vacso.cloud/privkey.pem"
+                                },
+                                "content": "server {\n    server_name airsoft.vacso.cloud;\n    root /var/www/vhost/airsoft.vacso.cloud/public;\n\n    index index.php;\n\n    location / {\n        try_files $uri $uri/ /index.php?$query_string;\n    }\n\n    location ~ \\.php$ {\n        include snippets/fastcgi-php.conf;\n        fastcgi_pass unix:/var/run/php/php-fpm.sock;\n    }\n\n    listen 443 ssl; # managed by Certbot\n    ssl_certificate /etc/letsencrypt/live/airsoft.vacso.cloud/fullchain.pem; # managed by Certbot\n    ssl_certificate_key /etc/letsencrypt/live/airsoft.vacso.cloud/privkey.pem; # managed by Certbot\n    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot\n    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot\n}\nserver {\n    if ($host = airsoft.vacso.cloud) {\n        return 301 https://$host$request_uri;\n    } # managed by Certbot\n\n    listen 80;\n    server_name airsoft.vacso.cloud;\n    return 404; # managed by Certbot\n}\n"
+                            }
+                        --}}
+                </form>
+            </div>
+        </div>
+
+        <div class="vlx-outer-modal js-modal--webserver-new-disabled" id="vlx-webserver-modal-add-disabled">
+            <div class="vlx-modal vlx-modal--webserver">
+                <a class="vlx-close-btn js-close-modal">
+                    <div class="vlx-icon--wrapper">
+                        <i class="vlx-icon vlx-icon--xmark"></i>
+                    </div>
+                </a>
+                <form class="vlx-form">
+                    @csrf
+
+                    <div class="vlx-form__box vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">File name</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="file_name" placeholder="sub.domain.conf" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">Content</label>
+                            <div class="vlx-input">
+                                <textarea data-key="content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group btn-group--left">
+                        <a class="btn btn--success btn--small js-add-webserver">Save</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="vlx-outer-modal js-modal--webserver-new" id="vlx-webserver-modal-add">
+            <div class="vlx-modal vlx-modal--webserver">
+                <a class="vlx-close-btn js-close-modal">
+                    <div class="vlx-icon--wrapper">
+                        <i class="vlx-icon vlx-icon--xmark"></i>
+                    </div>
+                </a>
+                <form class="vlx-form">
+                    @csrf
+
+                    <div class="vlx-form__box vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">File name</label>
+                            <div class="vlx-input">
+                                <input type="text" data-key="file_name" placeholder="sub.domain.conf" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vlx-form__box">
+                        <div class="vlx-input-box">
+                            <label class="h4">Content</label>
+                            <div class="vlx-input">
+                                <textarea data-key="content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group btn-group--left">
+                        <a class="btn btn--success btn--small js-add-webserver">Save</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
 
         <script src="/js/nodeusage.js"></script>
         <script src="/js/tabcontroller.js"></script>

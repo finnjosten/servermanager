@@ -15,16 +15,19 @@ class NodeController extends Controller
      */
     public function index(Node $node) {
         if ($node->user_id !== Auth::user()->id) {
-            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+            return view('pages.errors.error', [
+                'code' => 403,
+                'message' => 'This node doesnt exists or is not in control by you'
+            ]);
         }
-        return view('pages.account.node', ['node' => $node]);
+        return view('pages.account.nodes.index', ['node' => $node]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create() {
-        return view('pages.account.node-edit', ['mode' => 'create']);
+        return view('pages.account.nodes.manage', ['mode' => 'create']);
     }
 
     /**
@@ -35,11 +38,12 @@ class NodeController extends Controller
         // Validate the request
         try {
             $validated = $request->validate([
-                'name' => 'required',
-                'ipv4' => 'required',
-                'fqdn' => 'required',
-                'endpoint' => 'required',
-                'key' => 'required',
+                'name'          => 'required',
+                'ipv4'          => 'required',
+                'fqdn'          => 'required',
+                'endpoint'      => 'required',
+                'key'           => 'required',
+                'datalix_id'    => 'nullable',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->with('error', 'A field did not meet the requirements')->withInput();
@@ -51,22 +55,18 @@ class NodeController extends Controller
 
         $validated['key'] = Crypt::encrypt($validated['key']);
 
-        // Ensure the endpoint ends with a slash
-        if (substr($validated['endpoint'], -1) !== '/') {
-            $validated['endpoint'] .= '/';
-        }
-
         // Clear any previous errors
         $request->session()->forget(['errors', 'success', 'info', 'warning']);
 
         // Create the item
         $node = Node::create([
-            'name' =>  $validated['name'],
-            'ipv4' =>  $validated['ipv4'],
-            'fqdn' =>  $validated['fqdn'],
-            'endpoint' =>  $validated['endpoint'],
-            'key' =>  $validated['key'],
-            'user_id' => Auth::user()->id,
+            'name'          => $validated['name'],
+            'ipv4'          => $validated['ipv4'],
+            'fqdn'          => $validated['fqdn'],
+            'endpoint'      => $validated['endpoint'],
+            'key'           => $validated['key'],
+            'datalix_id'    => $validated['datalix_id'] ?? null,
+            'user_id'       => Auth::user()->id,
         ]);
 
         return redirect()->route('dashboard.main')->with('success', 'Node has been added');
@@ -78,9 +78,12 @@ class NodeController extends Controller
      */
     public function edit(Node $node) {
         if ($node->user_id !== Auth::user()->id) {
-            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+            return view('pages.errors.error', [
+                'code' => 403,
+                'message' => 'This node doesnt exists or is not in control by you'
+            ]);
         }
-        return view('pages.account.node-edit', ['mode' => 'edit', 'node' => $node]);
+        return view('pages.account.nodes.manage', ['mode' => 'edit', 'node' => $node]);
     }
 
     /**
@@ -89,17 +92,21 @@ class NodeController extends Controller
     public function update(Request $request, Node $node) {
 
         if ($node->user_id !== Auth::user()->id) {
-            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+            return view('pages.errors.error', [
+                'code' => 403,
+                'message' => 'This node doesnt exists or is not in control by you'
+            ]);
         }
 
         // Validate the request
         try {
             $validated = $request->validate([
-                'name' => 'required',
-                'ipv4' => 'required',
-                'fqdn' => 'required',
-                'endpoint' => 'required',
-                'key' => 'required',
+                'name'          => 'required',
+                'ipv4'          => 'required',
+                'fqdn'          => 'required',
+                'endpoint'      => 'required',
+                'key'           => 'required',
+                'datalix_id'    => 'nullable',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->with('error', 'A field did not meet the requirements')->withInput();
@@ -111,22 +118,18 @@ class NodeController extends Controller
 
         $validated['key'] = Crypt::encrypt($validated['key']);
 
-        // Ensure the endpoint ends with a slash
-        if (substr($validated['endpoint'], -1) !== '/') {
-            $validated['endpoint'] .= '/';
-        }
-
         // Clear any previous errors
         $request->session()->forget(['errors', 'success', 'info', 'warning']);
 
         // Update the item
         $node->update([
-            'name' =>  $validated['name'],
-            'ipv4' =>  $validated['ipv4'],
-            'fqdn' =>  $validated['fqdn'],
-            'endpoint' =>  $validated['endpoint'],
-            'key' =>  $validated['key'],
-            'user_id' => Auth::user()->id,
+            'name'          => $validated['name'],
+            'ipv4'          => $validated['ipv4'],
+            'fqdn'          => $validated['fqdn'],
+            'endpoint'      => $validated['endpoint'],
+            'key'           => $validated['key'],
+            'datalix_id'    => $validated['datalix_id'] ?? null,
+            'user_id'       => Auth::user()->id,
         ]);
 
         return redirect()->route('dashboard.node', $node->id)->with('success', 'Node has been updated');
@@ -138,9 +141,12 @@ class NodeController extends Controller
      */
     public function trash(Node $node) {
         if ($node->user_id !== Auth::user()->id) {
-            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+            return view('pages.errors.error', [
+                'code' => 403,
+                'message' => 'This node doesnt exists or is not in control by you'
+            ]);
         }
-        return view('pages.account.node-edit', ['mode' => 'delete', 'node' => $node]);
+        return view('pages.account.nodes.manage', ['mode' => 'delete', 'node' => $node]);
     }
 
     /**
@@ -149,7 +155,10 @@ class NodeController extends Controller
     public function destroy(Node $node) {
 
         if ($node->user_id !== Auth::user()->id) {
-            return redirect()->route('dashboard.main')->with('error', 'This node doesnt exists or is not in control by you');
+            return view('pages.errors.error', [
+                'code' => 403,
+                'message' => 'This node doesnt exists or is not in control by you'
+            ]);
         }
 
         $node->delete();
