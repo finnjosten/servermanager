@@ -140,12 +140,16 @@
     </div>
 
     <div class="block span--4">
-        @if ($node->datalix_id)
-            <p>Datalix ID is present and the SM will try to use the Datalix Websocket for usage.</p>
-            <p>Using datalix usage means the CPU, RAM and Net updates are faster.<br>But the SM will use the node api for CPU Cores, Disk and Net Total usage but dont update as fast.</p>
+        @if ($node->user_id == auth()->id())
+            @if ($node->datalix_id)
+                <p>Datalix ID is present and the SM will try to use the Datalix Websocket for usage.</p>
+                <p>Using datalix usage means the CPU, RAM and Net updates are faster.<br>But the SM will use the node api for CPU Cores, Disk and Net Total usage but dont update as fast.</p>
+            @else
+                <p>Datalix ID is <i>not</i> present. The SM will use the nodes api to retrieve usage.</p>
+                <p>CPU, Ram and Net usage will not be as fast. Net in and Net out usage will not work!</p>
+            @endif
         @else
-            <p>Datalix ID is <i>not</i> present. The SM will use the nodes api to retrieve usage.</p>
-            <p>CPU, Ram and Net usage will not be as fast. Net in and Net out usage will not work!</p>
+            <p>Since you are not the owner the server will default to the API usage endpoint.</p>
         @endif
     </div>
 

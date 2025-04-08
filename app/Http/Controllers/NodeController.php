@@ -14,7 +14,7 @@ class NodeController extends Controller
      * Display a listing of the resource.
      */
     public function index(Node $node) {
-        if ($node->user_id !== Auth::user()->id) {
+        if ($node->user_id !== Auth::user()->id && !Auth::user()->isAdmin()) {
             return view('pages.errors.error', [
                 'code' => 403,
                 'message' => 'This node doesnt exists or is not in control by you'

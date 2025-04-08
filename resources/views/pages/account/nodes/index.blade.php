@@ -39,9 +39,14 @@
             // This is your node endpoint and bearer token, this is used to request data from your nodes api.
             const serverApi = "{{ $node->endpoint }}";
             const bearerToken = "{{ vlxDecrypt($node->key) }}";
-            const uses_datalix = {{ $node->datalix_id ? 'true' : 'false' }};
             const datalix_id = '{{ $datalix_id }}';
-            const datalix_token = '{{ $datalix_token }}';
+            @if ($node->user_id == auth()->id())
+                const uses_datalix = {{ $node->datalix_id ? 'true' : 'false' }};
+                const datalix_token = '{{ $datalix_token }}';
+            @else
+                const uses_datalix = false;
+                const datalix_token = '';
+            @endif
         </script>
 
         <section class="vlx-header vlx-header--server">
@@ -395,7 +400,7 @@
                         <div class="vlx-input-box">
                             <label class="h4">Content</label>
                             <div class="vlx-input">
-                                <textarea data-key="content"></textarea>
+                                <textarea class="font-code" data-key="content"></textarea>
                             </div>
                         </div>
                     </div>
@@ -414,23 +419,6 @@
                         <a class="btn btn--danger btn--small js-delete-webserver">Delete</a>
                     </div>
 
-                        {{--
-                            "airsoft.vacso.cloud.conf": {
-                                "root": "/var/www/vhost/airsoft.vacso.cloud/public",
-                                "proxy": null,
-                                "ports": [
-                                    "443",
-                                    "80"
-                                ],
-                                "server_name": "airsoft.vacso.cloud",
-                                "ssl": {
-                                    "enabled": true,
-                                    "cert": "/etc/letsencrypt/live/airsoft.vacso.cloud/fullchain.pem",
-                                    "key": "/etc/letsencrypt/live/airsoft.vacso.cloud/privkey.pem"
-                                },
-                                "content": "server {\n    server_name airsoft.vacso.cloud;\n    root /var/www/vhost/airsoft.vacso.cloud/public;\n\n    index index.php;\n\n    location / {\n        try_files $uri $uri/ /index.php?$query_string;\n    }\n\n    location ~ \\.php$ {\n        include snippets/fastcgi-php.conf;\n        fastcgi_pass unix:/var/run/php/php-fpm.sock;\n    }\n\n    listen 443 ssl; # managed by Certbot\n    ssl_certificate /etc/letsencrypt/live/airsoft.vacso.cloud/fullchain.pem; # managed by Certbot\n    ssl_certificate_key /etc/letsencrypt/live/airsoft.vacso.cloud/privkey.pem; # managed by Certbot\n    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot\n    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot\n}\nserver {\n    if ($host = airsoft.vacso.cloud) {\n        return 301 https://$host$request_uri;\n    } # managed by Certbot\n\n    listen 80;\n    server_name airsoft.vacso.cloud;\n    return 404; # managed by Certbot\n}\n"
-                            }
-                        --}}
                 </form>
             </div>
         </div>
@@ -457,7 +445,7 @@
                         <div class="vlx-input-box">
                             <label class="h4">Content</label>
                             <div class="vlx-input">
-                                <textarea data-key="content"></textarea>
+                                <textarea class="font-code" data-key="content"></textarea>
                             </div>
                         </div>
                     </div>
@@ -491,7 +479,7 @@
                         <div class="vlx-input-box">
                             <label class="h4">Content</label>
                             <div class="vlx-input">
-                                <textarea data-key="content"></textarea>
+                                <textarea class="font-code" data-key="content"></textarea>
                             </div>
                         </div>
                     </div>

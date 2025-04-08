@@ -173,6 +173,10 @@ class ApiController extends Controller
             return response()->json(["status" => "error", 'message' => $response->message], 400);
         }
 
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
+        }
+
         return response()->json(["status" => "success", 'message' => 'Webserver has been saved'], 200);
     }
 
@@ -182,6 +186,10 @@ class ApiController extends Controller
 
         if ((isset($response->status) && $response->status == "error")) {
             return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
         }
 
         return response()->json(["status" => "success", 'message' => 'Webserver has been removed'], 200);
@@ -199,6 +207,10 @@ class ApiController extends Controller
             ], 400);
         }
 
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
+        }
+
         return response()->json(["status" => "success", 'message' => 'Webserver has been updated'], 200);
     }
 
@@ -210,6 +222,10 @@ class ApiController extends Controller
             return response()->json(["status" => "error", 'message' => $response->message], 400);
         }
 
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
+        }
+
         return response()->json(["status" => "success", 'message' => 'Webserver has been enabled'], 200);
     }
 
@@ -219,6 +235,10 @@ class ApiController extends Controller
 
         if ((isset($response->status) && $response->status == "error")) {
             return response()->json(["status" => "error", 'message' => $response->message], 400);
+        }
+
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
         }
 
         return response()->json(["status" => "success", 'message' => 'Webserver has been disabled'], 200);
@@ -234,6 +254,10 @@ class ApiController extends Controller
                 'message' => $response->message,
                 'error' => $response->error ?? null,
             ], 400);
+        }
+
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
         }
 
         return response()->json(["status" => "success", 'message' => 'Webserver has been added'], 200);

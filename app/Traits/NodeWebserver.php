@@ -38,6 +38,10 @@ trait NodeWebserver {
             return ['status' => 'error', 'message' => $response->message];
         }
 
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
+        }
+
         return ['status' => 'success'];
     }
 
@@ -46,6 +50,10 @@ trait NodeWebserver {
 
         if ((isset($response->status) && $response->status == "error")) {
             return ['status' => 'error', 'message' => $response->message];
+        }
+
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
         }
 
         return ['status' => 'success'];
@@ -58,6 +66,10 @@ trait NodeWebserver {
             return ['status' => 'error', 'message' => $response->message];
         }
 
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
+        }
+
         return ['status' => 'success'];
     }
 
@@ -66,6 +78,10 @@ trait NodeWebserver {
 
         if ((isset($response->status) && $response->status == "error")) {
             return ['status' => 'error', 'message' => $response->message];
+        }
+
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
         }
 
         return ['status' => 'success'];
@@ -82,6 +98,10 @@ trait NodeWebserver {
             ];
         }
 
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
+        }
+
         return ['status' => 'success'];
     }
 
@@ -94,6 +114,10 @@ trait NodeWebserver {
                 'message' => $response->message,
                 'error' => $response->error ?? null,
             ];
+        }
+
+        if ((isset($response->status) && $response->status == "warning")) {
+            return [ 'status' => 'warning', 'message' => $response->message, 'warning' => $response->warning ?? null, ];
         }
 
         return ['status' => 'success'];

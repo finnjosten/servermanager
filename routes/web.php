@@ -32,6 +32,10 @@ if(env('SETTING_MAINTENANCE')) {
 
 Route::redirect('/', '/login');
 
+Route::get('/session-test', function () {
+    return session()->get('key');
+});
+
 include __DIR__.'/auth.php';
 include __DIR__.'/account.php';
 include __DIR__.'/api.php';

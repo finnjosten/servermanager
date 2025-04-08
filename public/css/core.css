@@ -261,6 +261,8 @@ small, .small, small *, .small * { --fs: var(--fs-small); --lh: 1.2; --fw: norma
 *:is(em) { font-style: italic; }
 *:is(p strong, pre strong, a strong, li strong, span strong, h3 strong, h4 strong, h5 strong, h6 strong) { --fw: bold; }
 
+.font-code { --ff: var(--font-code) !important; }
+
 .--no-scroll { overflow: hidden; }
 
 
@@ -399,18 +401,18 @@ footer .block-2 a img { width: 40px; height: 40px; }
 
 
 /** Whitespace **/
-.wst--small { padding-top: 35px; }
-.mt--small { margin-top: 35px; }
-.wst--medium { padding-top: 70px; }
-.mt--medium { margin-top: 70px; }
-.wst--large { padding-top: 140px; }
-.mt--large { margin-top: 140px; }
-.wsb--small { padding-bottom: 35px; }
-.mb--small { margin-bottom: 35px; }
-.wsb--medium { padding-bottom: 70px; }
-.mb--medium { margin-bottom: 70px; }
-.wsb--large { padding-bottom: 140px; }
-.mb--large { margin-bottom: 140px; }
+.wst--small { padding-top: 32px; }
+.mt--small { margin-top: 32px; }
+.wst--medium { padding-top: 64px; }
+.mt--medium { margin-top: 64px; }
+.wst--large { padding-top: 128px; }
+.mt--large { margin-top: 128px; }
+.wsb--small { padding-bottom: 32px; }
+.mb--small { margin-bottom: 32px; }
+.wsb--medium { padding-bottom: 64px; }
+.mb--medium { margin-bottom: 64px; }
+.wsb--large { padding-bottom: 128px; }
+.mb--large { margin-bottom: 128px; }
 
 
 /** Backgrounds **/

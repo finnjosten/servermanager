@@ -337,6 +337,10 @@ async function saveWebserver(modal, id) {
             throw new Error(data.message);
         }
 
+        if (data.status == "warning") {
+            toastWarning(data.warning ?? data.message);
+        }
+
         toastSuccess('Config saved');
 
         closeModal(modal);
@@ -369,6 +373,10 @@ async function deleteWebserver(modal, id) {
     .then(data => {
         if (data.status == "error") {
             throw new Error(data.message);
+        }
+
+        if (data.status == "warning") {
+            toastWarning(data.warning ?? data.message);
         }
 
         toastSuccess('Config removed');
@@ -406,6 +414,10 @@ async function certbotWebserver(modal, id) {
             throw new Error(data.message);
         }
 
+        if (data.status == "warning") {
+            toastWarning(data.warning ?? data.message);
+        }
+
         toastSuccess('Domain now has SSL');
 
         closeModal(modal);
@@ -440,6 +452,10 @@ async function enableWebserver(modal, id) {
             throw new Error(data.message);
         }
 
+        if (data.status == "warning") {
+            toastWarning(data.warning ?? data.message);
+        }
+
         toastSuccess('Config enabled');
 
         closeModal(modal);
@@ -472,6 +488,10 @@ async function disableWebserver(modal, id) {
     .then(data => {
         if (data.status == "error") {
             throw new Error(data.message);
+        }
+
+        if (data.status == "warning") {
+            toastWarning(data.warning ?? data.message);
         }
 
         toastSuccess('Config disabled');

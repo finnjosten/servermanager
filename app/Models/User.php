@@ -20,6 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'uuid',
         'email',
         'password',
         'datalix_token',
@@ -55,14 +56,5 @@ class User extends Authenticatable
 
     public function isVerified() {
         return $this->verified === 1;
-    }
-
-    public function getFriends() {
-        return $this->hasMany(User::class, 'friend_ids');
-    }
-
-    public function addFriend(User $user) {
-        $this->friend_ids .= $user->id.",";
-        $this->save();
     }
 }

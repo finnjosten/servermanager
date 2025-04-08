@@ -33,9 +33,11 @@ class AuthController extends Controller
         // Clear any previous errors
         $request->session()->forget(['errors', 'success', 'info', 'warning']);
 
+        $uuid = UUID::uuid4()->toString();
+
         $data = [
             'name' => $validated['name'],
-            'uuid' => UUID::uuid4()->toString(),
+            'uuid' => $uuid,
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
             'admin' => null,

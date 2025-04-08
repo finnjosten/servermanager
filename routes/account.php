@@ -8,6 +8,9 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NodeController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
+
+use function Illuminate\Log\log;
 
 // Authenticated stuff (should not be turned off with normal maintenance mode only full lock down)
 Route::group(['middleware' => 'auth'], function () {
