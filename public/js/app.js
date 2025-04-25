@@ -29,8 +29,67 @@ function reloadcss() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initAutoUpdater();
+
+    document.addEventListener('livewire:init', () => {
+        initVlxLivewire();
+    });
 });
 
+
+function initVlxLivewire() {
+    let click_btns = document.querySelectorAll('.lw-click');
+    click_btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            let event = btn.dataset.lwEvent;
+            let params = JSON.parse(btn.dataset.lwParams ?? '{}');
+
+            if (event) {
+                Livewire.dispatch(event, params);
+            }
+        });
+    });
+
+    let outside_click_btns = document.querySelectorAll('.lw-outside-click');
+    outside_click_btns.forEach(btn => {
+        document.addEventListener('click', (event) => {
+            if (!btn.contains(event.target)) {
+                let event = btn.dataset.lwEvent;
+                let params = JSON.parse(btn.dataset.lwParams ?? '{}');
+
+                if (event) {
+                    Livewire.dispatch(event, params);
+                }
+            }
+        });
+    });
+
+    let hover_btns = document.querySelectorAll('.lw-hover');
+    hover_btns.forEach(btn => {
+        btn.addEventListener('mouseover', () => {
+            let event = btn.dataset.lwEvent;
+            let params = JSON.parse(btn.dataset.lwParams ?? '{}');
+
+            if (event) {
+                Livewire.dispatch(event, params);
+            }
+        });
+    });
+
+
+    Livewire.on('vlx-toast', (data) => {
+        if (data.type === 'success') {
+            toastSuccess(data.message, data.second_message);
+        } else if (data.type === 'info') {
+            toastInfo(data.message, data.second_message);
+        } else if (data.type === 'warning') {
+            toastWarning(data.message, data.second_message);
+        } else if (data.type === 'error') {
+            toastError(data.message, data.second_message);
+        } else {
+            console.log(data);
+        }
+    });
+}
 
 
 initAutoUpdater = () => {

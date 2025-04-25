@@ -214,6 +214,23 @@ use Illuminate\Support\Facades\Crypt;
         }
     }
 
+    /**
+     * Livewire attributes
+     * Encodes a php array or object to an json stright to be used for a livewire button
+     */
+    if (! function_exists('lw_attr')) {
+        function lw_attr($event, $params) {
+            if (empty($event)) return;
+
+            $return = 'data-lw-event='.$event;
+            if (is_array($params) || is_object($params)) {
+                $params = json_encode($params);
+                $return .= ' data-lw-params='.$params;
+            }
+            return $return;
+        }
+    }
+
 
 
 

@@ -20,7 +20,7 @@
                         $fancy_name = str_contains($config_name, ".conf") ? str_replace(".conf", "", $fancy_name) : $fancy_name;
                     @endphp
 
-                    <div class="vlx-card vlx-card--config js-toggle-modal" data-target-modal="webserver-modal" data-api-target="{{ $config_name }}">
+                    <div class="vlx-card vlx-card--config lw-click" {{ lw_attr("show-webserver-modal", ['id' => $config_name]) }}>
                         <h3 class="vlx-card__title">{{ $fancy_name }}</h3>
 
                         @if (!empty($config->root))
@@ -61,7 +61,7 @@
                         $fancy_name = str_contains($config_name, ".conf") ? str_replace(".conf", "", $fancy_name) : $fancy_name;
                     @endphp
 
-                    <div class="vlx-card vlx-card--config js-toggle-modal" data-target-modal="webserver-modal" data-api-target="{{ $config_name }}">
+                    <div class="vlx-card vlx-card--config lw-click" {{ lw_attr("show-webserver-modal", ['id' => $config_name]) }}>
                         <h3 class="vlx-card__title">{{ $fancy_name }}</h3>
 
                         @if (!empty($config->root))
