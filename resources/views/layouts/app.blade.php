@@ -34,6 +34,8 @@
 
         @yield('head')
 
+        @livewireStyles
+
     </head>
     <body class="show-nav-@yield('show-nav', 'true')">
         @include('components.navbar')
@@ -115,5 +117,6 @@
             </script>
         </div>
 
+        @livewireScripts
     </body>
 </html>

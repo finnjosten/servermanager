@@ -203,22 +203,6 @@
                         <a class="btn btn--success btn--small js-save-webapp">Save</a>
                         <a class="btn btn--danger btn--small js-delete-webapp">Delete</a>
                     </div>
-
-                        {{--
-                            "name": "servermanager.vacso.cloud",
-                            "type": "laravel",
-                            "meta": {
-                                "project_name": "Server Manager",
-                                "public_address": "https://servermanager.vacso.cloud",
-                                "description": "Server Manager is a web application that allows you to manage your servers and services in a simple and easy way.",
-                                "created_at": "2024-09-28",
-                                "repository_url": "https://github.com/finnjosten/servermanager",
-                                "environment": "development",
-                                "notes": "This is a development version of the application. It is not recommended for production use."
-                            },
-                            "id": 0,
-                            "location": "/var/www/vhost/servermanager.vacso.cloud"
-                        --}}
                 </form>
             </div>
         </div>
@@ -336,92 +320,7 @@
             </div>
         </div>
 
-        <div class="vlx-outer-modal js-modal--webserver" id="vlx-webserver-modal">
-            <div class="vlx-modal vlx-modal--webserver">
-                <a class="vlx-close-btn js-close-modal">
-                    <div class="vlx-icon--wrapper">
-                        <i class="vlx-icon vlx-icon--xmark"></i>
-                    </div>
-                </a>
-                <form class="vlx-form">
-                    @csrf
-
-                    <div class="vlx-form__box vlx-form__box--hor">
-                        <div class="vlx-input-box">
-                            <label class="h4">Root</label>
-                            <div class="vlx-input">
-                                <input type="text" data-key="root" placeholder="/var/www/vhost/site.vasco.cloud" readonly>
-                            </div>
-                        </div>
-                        <div class="vlx-input-box">
-                            <label class="h4">Proxy</label>
-                            <div class="vlx-input">
-                                <input type="text" data-key="proxy" placeholder="http://localhost:80/" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="vlx-form__box vlx-form__box--hor">
-                        <div class="vlx-input-box">
-                            <label class="h4">Ports</label>
-                            <div class="vlx-input">
-                                <input type="text" data-key="ports" placeholder="80, 443" readonly>
-                            </div>
-                        </div>
-                        <div class="vlx-input-box">
-                            <label class="h4">Server name</label>
-                            <div class="vlx-input">
-                                <input type="text" data-key="server_name" placeholder="site.vacso.cloud" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="vlx-form__box vlx-form__box">
-                        <div class="vlx-input-box">
-                            <label class="h4">SSL</label>
-                            <div class="vlx-input">
-                                <input type="text" data-key="ssl" placeholder="True" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="vlx-form__box vlx-form__box--hor">
-                        <div class="vlx-input-box">
-                            <label class="h4">Cert location</label>
-                            <div class="vlx-input">
-                                <input type="text" data-key="cert" placeholder="/etc/letsencrypt/live/site.vacso.cloud/cert.pem" readonly>
-                            </div>
-                        </div>
-                        <div class="vlx-input-box">
-                            <label class="h4">Key location</label>
-                            <div class="vlx-input">
-                                <input type="text" data-key="key" placeholder="/etc/letsencrypt/live/site.vacso.cloud/key.pem" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="vlx-form__box">
-                        <div class="vlx-input-box">
-                            <label class="h4">Content</label>
-                            <div class="vlx-input">
-                                <textarea class="font-code" data-key="content"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="btn-group btn-group--left">
-                        <a class="btn btn--warning btn--small js-disable-webserver">Disable config</a>
-                        <a class="btn btn--warning btn--small js-enable-webserver">Enable config</a>
-                    </div>
-
-                    <div class="btn-group btn-group--left">
-                        <a class="btn btn--info btn--small js-certbot-webserver">Run certbot</a>
-                    </div>
-
-                    <div class="btn-group btn-group--left wst--small">
-                        <a class="btn btn--success btn--small js-save-webserver">Save</a>
-                        <a class="btn btn--danger btn--small js-delete-webserver">Delete</a>
-                    </div>
-
-                </form>
-            </div>
-        </div>
+        @livewire('modals.webserver', ['node' => $node])
 
         <div class="vlx-outer-modal js-modal--webserver-new-disabled" id="vlx-webserver-modal-add-disabled">
             <div class="vlx-modal vlx-modal--webserver">

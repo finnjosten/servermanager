@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\UserController;
+use App\Livewire\Counter;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ if(env('SETTING_MAINTENANCE')) {
 }
 
 // Normal mode
+
+Route::view('/counter', 'pages.counter');
 
 Route::redirect('/', '/login');
 
