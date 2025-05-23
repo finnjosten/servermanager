@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 use Spatie\Ssh\Ssh;
 use Exception;
@@ -62,6 +63,9 @@ class Node extends Model {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // 5 seconds timeout
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3); // 3 sec to connect
+
         // Bearer token auth
         if (isset($decryptedToken)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -78,10 +82,19 @@ class Node extends Model {
         $output = curl_exec($ch);
 
         if (curl_errno($ch)) {
-            return [ 'error' => curl_error($ch) ];
+            $error = curl_error($ch);
+            curl_close($ch);
+            Log::error("API call failed to $url: $error");
+            return ['error' => $error];
         }
 
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
+        if ($httpCode >= 400) {
+            Log::warning("API call to $url returned HTTP $httpCode");
+            return ['error' => "HTTP $httpCode"];
+        }
 
         return vlx_cast_to_object(json_decode($output, true));
     }

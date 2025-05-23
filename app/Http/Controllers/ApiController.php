@@ -47,25 +47,25 @@ class ApiController extends Controller
 
 
     public function checkNodeStatus($address) {
-
-        if (empty($address)) return response()->json(['error' => 'Invalid URL.'], 400);
-
-        if (!filter_var($address, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
-            if (!filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) && !filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                return response()->json(['error' => 'Invalid IP address.'], 400);
-            }
-            return response()->json(['error' => 'Invalid domain name.'], 400);
+        if (empty($address)) {
+            return response()->json(['error' => 'Invalid URL.'], 400);
         }
 
-        $pingresult = exec("ping -c 1 " . escapeshellarg($address), $output, $status);
+        $isIp = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6);
+        $isDomain = filter_var($address, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME);
 
-        if ($status == 0) {
-            return response()->json(['success' => 'Node is reachable'], 200);
-        } else {
-            return response()->json(['error' => 'Node is not reachable'], 503);
+        if (!$isIp && !$isDomain) {
+            return response()->json(['error' => 'Invalid address.'], 400);
         }
 
+        $cmd = 'ping -c 1 -W 2 ' . escapeshellarg($address); // 2s timeout
+        exec($cmd, $output, $status);
+
+        return $status === 0
+            ? response()->json(['success' => 'Node is reachable'], 200)
+            : response()->json(['error' => 'Node is not reachable'], 503);
     }
+
 
 
 
